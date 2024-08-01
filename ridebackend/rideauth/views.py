@@ -37,6 +37,9 @@ class LoginView(APIView):
 
         token = jwt.encode(payload, os.getenv('TOKEN_SECRET'), algorithm='HS256').decode('utf-8')
 
-        return Response({
+        response = Response()
+        response.set_cookie(key='kwt', value=token, httponly=True)
+        response.data = {
             'jwt': token
-        })
+        }
+        return response
