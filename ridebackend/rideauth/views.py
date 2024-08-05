@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .serializers import UserSerializer
 from .models import User
-import jwt, datetime
+import jwt
+from datetime import datetime, timezone, timedelta
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -31,8 +32,8 @@ class LoginView(APIView):
         
         payload = {
             'id': user.id,
-            'exp': datetime.datetime.now() + datetime.timedelta(minutes=60),
-            'iat': datetime.datetime.now()
+            'exp': datetime.now(timezone.utc) + timedelta(minutes=60),
+            'iat': datetime.now(timezone.utc)
         }
         token = jwt.encode(payload, os.getenv('TOKEN_SECRET'), algorithm='HS256')
 
@@ -52,7 +53,7 @@ class UserView(APIView):
             raise AuthenticationFailed("Unauthenticated")
         
         try:
-            payload = jwt.decode(token, os.getenv('TOKEN_SECRET'), algorithm=['HS256'])
+            payload = jwt.decode(token, os.getenv('TOKEN_SECRET'), algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated")
 
