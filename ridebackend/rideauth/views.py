@@ -62,6 +62,14 @@ class UserView(APIView):
 
         return Response(serializer.data)
     
+class UpdateUserView(APIView):
+    def put(self,request):
+        user = request.user
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    
 class LogoutView(APIView):
     def post(self, request):
         response = Response()
