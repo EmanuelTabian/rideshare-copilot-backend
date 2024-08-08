@@ -83,6 +83,13 @@ class UpdateUserView(APIView):
         serializer.save()
         return Response(serializer.data)
     
+class DeleteUserView(APIView):
+    def delete(self, request):
+        user = request.user
+        user.delete()
+
+        return Response()
+
 class LogoutView(APIView):
     def post(self, request):
         response = Response()
