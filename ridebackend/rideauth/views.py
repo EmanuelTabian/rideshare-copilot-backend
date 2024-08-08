@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer
 from .models import User
 import jwt
@@ -19,6 +20,7 @@ class RegisterView(APIView):
         return Response(serializer.data)
 
 class LoginView(APIView):
+
     def post (self,request):
         email = request.data['email']
         password = request.data['password']
@@ -63,8 +65,19 @@ class UserView(APIView):
         return Response(serializer.data)
     
 class UpdateUserView(APIView):
+
     def put(self,request):
-        user = request.user
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed("Unauthenticated")
+        
+        try:
+            payload = jwt.decode(token, os.getenv('TOKEN_SECRET'), algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed("Unauthenticated")
+
+        user = User.objects.filter(id=payload['id']).first()
         serializer = UserSerializer(user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
