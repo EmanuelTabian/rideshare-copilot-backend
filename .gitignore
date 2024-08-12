@@ -1,4 +1,5 @@
 /.venv
+/.env
 /ridebackend/.env
 __pycache__/
 migrations/

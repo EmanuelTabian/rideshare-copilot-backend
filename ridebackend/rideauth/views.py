@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import authenticate
 from .serializers import UserSerializer
 from .models import User
 import jwt
@@ -12,6 +14,9 @@ load_dotenv()
 # Create your views here.
 
 class RegisterView(APIView):
+    authentication_classes = []
+    permission_classes = []  
+
     def post(self,request):
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -19,10 +24,14 @@ class RegisterView(APIView):
         return Response(serializer.data)
 
 class LoginView(APIView):
+    authentication_classes = []
+    permission_classes = [] 
+
     def post (self,request):
         email = request.data['email']
         password = request.data['password']
-        user = User.objects.filter(email=email).first()
+        # user = User.objects.filter(email=email).first()
+        user = authenticate(email=email, password=password)
 
         if user is None:
             raise AuthenticationFailed("User not found!")
@@ -45,35 +54,19 @@ class LoginView(APIView):
         return response
     
 class UserView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
-        token = request.COOKIES.get('jwt')
-
-        if not token:
-            raise AuthenticationFailed("Unauthenticated")
-        
-        try:
-            payload = jwt.decode(token, os.getenv('TOKEN_SECRET'), algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed("Unauthenticated")
-
-        user = User.objects.filter(id=payload['id']).first()
+        user = request.user
         serializer = UserSerializer(user)
 
         return Response(serializer.data)
     
 class UpdateUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def put(self,request):
-        token = request.COOKIES.get('jwt')
-
-        if not token:
-            raise AuthenticationFailed("Unauthenticated")
-        
-        try:
-            payload = jwt.decode(token, os.getenv('TOKEN_SECRET'), algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed("Unauthenticated")
-
-        user = User.objects.filter(id=payload['id']).first()
+        user = request.user
         serializer = UserSerializer(user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
