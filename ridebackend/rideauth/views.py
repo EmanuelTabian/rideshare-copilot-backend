@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, password_validation
 from .serializers import UserSerializer
 from .models import User
 import jwt
@@ -19,6 +19,7 @@ class RegisterView(APIView):
 
     def post(self,request):
         serializer = UserSerializer(data=request.data)
+        password_validation.validate_password(request.data['password'], password_validators=None)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
