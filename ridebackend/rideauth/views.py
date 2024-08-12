@@ -2,7 +2,6 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer
 from .models import User
 import jwt
@@ -20,7 +19,6 @@ class RegisterView(APIView):
         return Response(serializer.data)
 
 class LoginView(APIView):
-
     def post (self,request):
         email = request.data['email']
         password = request.data['password']
@@ -47,7 +45,6 @@ class LoginView(APIView):
         return response
     
 class UserView(APIView):
-
     def get(self, request):
         token = request.COOKIES.get('jwt')
 
@@ -65,7 +62,6 @@ class UserView(APIView):
         return Response(serializer.data)
     
 class UpdateUserView(APIView):
-
     def put(self,request):
         token = request.COOKIES.get('jwt')
 
@@ -84,6 +80,7 @@ class UpdateUserView(APIView):
         return Response(serializer.data)
     
 class DeleteUserView(APIView):
+
     def delete(self, request):
         user = request.user
         user.delete()
