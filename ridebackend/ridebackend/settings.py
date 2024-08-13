@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'rideauth'
+    'rideauth',
+    'ridecalc'
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
