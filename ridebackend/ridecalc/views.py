@@ -10,5 +10,5 @@ class AddCalculatorEntry(APIView):
     def post(self, request):
         serializer = CalculatorEntrySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        serializer.save(user=request.user)
         return Response(serializer.data)
