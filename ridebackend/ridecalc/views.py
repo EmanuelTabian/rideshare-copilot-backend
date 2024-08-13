@@ -12,3 +12,10 @@ class AddCalculatorEntry(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save(user=request.user)
         return Response(serializer.data)
+    
+class GetCalculatorEntries(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        serializer = CalculatorEntrySerializer(data=request.data)
+        return Response(serializer.data)
