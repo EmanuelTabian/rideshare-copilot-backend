@@ -3,7 +3,7 @@ from .models import CalculatorEntry
 class CalculatorEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = CalculatorEntry
-        fields = '__all__'
+        fields = ['id','app_income', 'commission', 'expenses', 'earnings']
 
         def create(self, validated_data):
             instance = self.Meta.model(**validated_data)
@@ -12,6 +12,7 @@ class CalculatorEntrySerializer(serializers.ModelSerializer):
         
         def patch(self, instance, validated_data):
             for attr, value in validated_data.items():
-                setattr(instance, attr, value)
+                if attr in ['app_income', 'commission', 'expenses', 'earnings']:
+                    setattr(instance, attr, value)
             instance.save()
             return instance
