@@ -36,5 +36,15 @@ class UpdateCalculatorEntries(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+    
+class DeleteCalculatorEntry(APIView):
+    def delete(self, request, calcentry_id):
+         calcentry = get_object_or_404(CalculatorEntry, pk=calcentry_id)
+         if calcentry.user != request.user:
+            return Response({"detail": "You do not have permission to delete this entry."})
+
+         calcentry.delete()
+
+         return Response()
    
 
