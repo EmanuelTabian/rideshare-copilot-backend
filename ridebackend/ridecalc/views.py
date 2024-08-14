@@ -23,7 +23,7 @@ class GetCalculatorEntries(APIView):
       serializer = CalculatorEntrySerializer(calcentries,many=True)
       return Response(serializer.data)
     
-class UpdateCalculatorEntries(APIView):
+class UpdateCalculatorEntry(APIView):
     permission_classes = [IsAuthenticated]
 
     def patch(self, request, calcentry_id):
