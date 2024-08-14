@@ -28,6 +28,10 @@ class UpdateCalculatorEntries(APIView):
 
     def patch(self, request, calcentry_id):
         calcentry = get_object_or_404(CalculatorEntry, pk=calcentry_id)
+
+        if calcentry.user != request.user:
+            return Response({"detail": "You do not have permission to edit this entry."})
+
         serializer = CalculatorEntrySerializer(calcentry, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
