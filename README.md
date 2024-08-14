@@ -134,6 +134,7 @@ Rideshare Copilot Backend is a Django-based application that manages user authen
 - **Calculator**
   - `GET /api/calculator/`: List all calculator entries
   - `POST /api/calculator/`: Create a new calculator entry
+  - `DELETE /api/calculator/`: Delete a calculator entry
 - **Documents**
   - `GET /api/documents/`: List all documents
   - `POST /api/documents/`: Add a new document

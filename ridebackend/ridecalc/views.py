@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from .serializers import CalculatorEntrySerializer
 from rest_framework.permissions import IsAuthenticated
 
+from rideauth.models import User
 # Create your views here.
 class AddCalculatorEntry(APIView):
     permission_classes = [IsAuthenticated]
@@ -17,5 +18,6 @@ class GetCalculatorEntries(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self,request):
-        serializer = CalculatorEntrySerializer(data=request.data)
-        return Response(serializer.data)
+      serializer = CalculatorEntrySerializer(data=request.data)
+      serializer.is_valid(raise_exception=True)
+      return Response(serializer.data)
