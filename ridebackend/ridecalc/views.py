@@ -19,6 +19,6 @@ class GetCalculatorEntries(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self,request):
-      calcentries = CalculatorEntry.objects.all()
+      calcentries = CalculatorEntry.objects.all().filter(user=request.user)
       serializer = CalculatorEntrySerializer(calcentries,many=True)
       return Response(serializer.data)
