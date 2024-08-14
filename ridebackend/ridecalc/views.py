@@ -22,3 +22,15 @@ class GetCalculatorEntries(APIView):
       calcentries = CalculatorEntry.objects.all().filter(user=request.user)
       serializer = CalculatorEntrySerializer(calcentries,many=True)
       return Response(serializer.data)
+    
+class UpdateCalculatorEntries(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, calcentry_id):
+        calcentry = get_object_or_404(CalculatorEntry, pk=calcentry_id)
+        serializer = CalculatorEntrySerializer(calcentry, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+   
+
