@@ -25,5 +25,5 @@ class File(models.Model):
     
     @property
     def url(self):
-        if settings.FILE_UPLOAD_STORAGE == "s3"
-
+        return self.file.url
+    
