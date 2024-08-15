@@ -51,7 +51,11 @@ STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
     },
+     "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
 }
+
 
 AWS_S3_CUSTOM_DOMAIN = 'https://d1aqhh0z4wbh2h.cloudfront.net'
 AWS_STORAGE_BUCKET_NAME = 'aws-ridebackend-bucket'
