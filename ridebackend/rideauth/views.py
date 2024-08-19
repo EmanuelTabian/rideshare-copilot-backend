@@ -68,7 +68,8 @@ class UpdateUserView(APIView):
 
     def put(self,request):
         user = request.user
-        password_validation.validate_password(request.data['password'], password_validators=None)
+        if 'password' in request.data:
+            password_validation.validate_password(request.data['password'], password_validators=None)
         serializer = UserSerializer(user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
