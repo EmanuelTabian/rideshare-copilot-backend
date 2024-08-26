@@ -23,4 +23,18 @@ class FileDirectUploadStartApi(APIView):
 
         return Response(data=presigned_data.data)
       
+class FileDirectUploadFinishApi(APIView):
+    class InputSerializer(serializers.Serializer):
+        file_id = serializers.CharField()
 
+    def post (self,request):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        file_id = serializer.validated_data["file_id"]
+
+        file = get_object_or_404(File, id=file_id)
+
+        service = FileDirectUploadService(request.user)
+        service.finish(file=file)
+
+        return Response({"id": file.id})
