@@ -1,6 +1,12 @@
 from django.db import transaction
 from .models import File
 from django.utils import timezone
+import pathlib
+from uuid import uuid4
+
+def file_generate_name(original_file_name):
+    mime_type = pathlib.Path(original_file_name).suffix
+    return f"{uuid4().hex}{mime_type}"
 
 class FileDirectUploadService:
     # Ensures that if something goes wrong with the methon, all changes are rolled back.
