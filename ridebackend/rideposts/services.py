@@ -1,6 +1,6 @@
 from django.db import transaction
 from .models import File
-
+from django.utils import timezone
 
 class FileDirectUploadService:
     # Ensures that if something goes wrong with the methon, all changes are rolled back.
@@ -24,3 +24,11 @@ class FileDirectUploadService:
             file_path=upload_path, file_type = file.file_type
         )
         return {"id": file.id, **presigned_data}
+    
+    @transaction.atomic
+    def finish(self, *, file:File):
+        file.upload_finished_at = timezone.now()
+        file.full_clean()
+        file.save()
+
+        return file
