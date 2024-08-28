@@ -15,8 +15,12 @@ def s3_generate_presigned_post(*, file_path, file_type):
         region_name=settings.AWS_S3_REGION_NAME
     )
     presigned_data = client.generate_presigned_post(settings.AWS_STORAGE_BUCKET_NAME, file_path, Fields={
+        "acl":settings.AWS_DEFAULT_ACL,
         "Content-Type": file_type 
-    }, Conditions=[{"Content-Type": file_type}], ExpiresIn=settings.AWS_QUERYSTRING_EXPIRE)
+    }, Conditions=[
+        {"acl":settings.AWS_DEFAULT_ACL},
+        {"Content-Type": file_type}], 
+        ExpiresIn=settings.AWS_QUERYSTRING_EXPIRE)
     return presigned_data
 
 def file_generate_name(original_file_name):
