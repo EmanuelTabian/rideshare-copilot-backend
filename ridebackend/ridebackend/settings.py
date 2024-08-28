@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rideauth',
-    'ridecalc'
+    'ridecalc',
+    'rideposts'
 ]
 
 STORAGES = {
