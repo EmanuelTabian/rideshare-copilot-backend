@@ -40,7 +40,7 @@ class FileDirectUploadService:
 
         file.full_clean()
         file.save()
-        upload_path = file_generate_upload_path(file, file.name)
+        upload_path = file_generate_upload_path(file, file.file_name)
 
         file.file = file.file.field.attr_class(file, file.file.field, upload_path)
         file.save()

@@ -18,10 +18,11 @@ class FileDirectUploadStartApi(APIView):
     def post(self,request, *args, **kwargs):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        service = FileDirectUploadService(request.user)
+        # Temporarily remove the request.user argument for the below mentioned service
+        service = FileDirectUploadService()
         presigned_data = service.start(**serializer.validated_data)
 
-        return Response(data=presigned_data.data)
+        return Response(data=presigned_data)
       
 class FileDirectUploadFinishApi(APIView):
     class InputSerializer(serializers.Serializer):
