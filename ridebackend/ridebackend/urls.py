@@ -7,5 +7,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('rideauth.urls')),
     path('api/', include('ridecalc.urls')),
-    path('api/', include('rideposts.urls'))
+    path('api/', include('rideposts.urls')),
+    path('api/', include('ridecars.urls'))
 ]
