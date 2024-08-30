@@ -29,3 +29,13 @@ class GetRidePost(APIView):
         car_post = get_object_or_404(CarPost, pk=car_post_id)
         serializer = CarPostSerializer(car_post)
         return Response(serializer.data)
+
+
+class GetUserCarPosts(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+      user_car_posts = CarPost.objects.all().filter(user=request.user)
+      serializer = CarPostSerializer(user_car_posts,many=True)
+      return Response(serializer.data)
+
