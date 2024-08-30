@@ -52,3 +52,15 @@ class UpdateRidePost(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+    
+class DeleteRidePost(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self,request, car_post_id):
+        car_post = get_object_or_404(CarPost, pk=car_post_id)
+        if car_post.user != request.user:
+            return Response({"detail": "You do not have permission to delete this car post."})
+
+        car_post.delete()
+        
+        return Response()
