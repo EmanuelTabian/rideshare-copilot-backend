@@ -44,8 +44,29 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rideauth',
-    'ridecalc'
+    'ridecalc',
+    'rideposts'
 ]
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+    },
+     "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+
+AWS_S3_CUSTOM_DOMAIN = os.getenv("AWS_S3_CUSTOM_DOMAIN")
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY')
+AWS_S3_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_CLOUDFRONT_KEY= os.getenv("AWS_CLOUDFRONT_KEY")
+AWS_CLOUDFRONT_KEY_ID = os.getenv("AWS_CLOUDFRONT_KEY_ID")
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
+AWS_QUERYSTRING_EXPIRE = 3600
+AWS_DEFAULT_ACL=os.getenv("AWS_DEFAULT_ACL")
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True

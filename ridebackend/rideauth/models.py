@@ -6,9 +6,11 @@ class User(AbstractUser):
     name = models.CharField(max_length=255)
     email = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
-    username = None 
+    # Set it back to none if user auth doen't work.
+    username = models.CharField(max_length=50, null=True, blank=True)
+   
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username',]
 
     
