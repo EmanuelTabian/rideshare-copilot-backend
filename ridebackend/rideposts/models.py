@@ -1,5 +1,4 @@
 from django.db import models
-from django.conf import settings
 
 
 def file_generate_upload_path(instance, filename):
