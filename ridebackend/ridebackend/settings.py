@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rideauth',
     'ridecalc',
-    'rideposts'
+    'rideposts',
+    'ridecars'
 ]
 
 STORAGES = {
