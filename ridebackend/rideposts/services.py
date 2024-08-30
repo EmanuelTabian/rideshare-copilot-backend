@@ -46,7 +46,7 @@ class FileDirectUploadService:
         file.save()
 
         presigned_data = s3_generate_presigned_post(
-            file_path=upload_path, file_type = file.file_type
+            file_path=upload_path, file_type=file.file_type
         )
         return {"id": file.id, **presigned_data}
     

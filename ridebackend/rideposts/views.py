@@ -18,7 +18,6 @@ class FileDirectUploadStartApi(APIView):
     def post(self,request, *args, **kwargs):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        # Temporarily remove the request.user argument for the below mentioned service
         service = FileDirectUploadService()
         presigned_data = service.start(**serializer.validated_data)
 
@@ -35,7 +34,7 @@ class FileDirectUploadFinishApi(APIView):
 
         file = get_object_or_404(File, id=file_id)
 
-        service = FileDirectUploadService(request.user)
+        service = FileDirectUploadService()
         service.finish(file=file)
 
         return Response({"id": file.id})
