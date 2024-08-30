@@ -11,7 +11,7 @@ class AddRidePost(APIView):
     def post(self,request): 
         serializer = CarPostSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        serializer.save(user=request.user)
         return Response(serializer.data)
 
 class GetAllRidePosts(APIView):
