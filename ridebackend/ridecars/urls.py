@@ -6,7 +6,7 @@ urlpatterns = [
     path('add-carpost', AddRidePost.as_view()),
     path('get-carposts', GetAllRidePosts.as_view()),
     path('get-carpost/<int:car_post_id>', GetRidePost.as_view()),
-    path('get-user-rideposts>', GetUserCarPosts.as_view()),
+    path('get-user-carposts', GetUserCarPosts.as_view()),
     path('update-ridepost/<int:car_post_id>', UpdateRidePost.as_view()),
     path('delete-ridepost/<int:car_post_id>', DeleteRidePost.as_view()),
 ]
