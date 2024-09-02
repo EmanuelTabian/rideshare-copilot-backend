@@ -34,7 +34,7 @@ def s3_generate_presigned_get(file_key):
      presigned_url = client.generate_presigned_url('get_object', Params={
          "Bucket": settings.AWS_STORAGE_BUCKET_NAME,
          "Key": file_key
-     }
+     },
      ExpiresIn=3600)
      return presigned_url
 
