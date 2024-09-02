@@ -4,7 +4,7 @@ from .models import CarPost
 class CarPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarPost
-        fields = ['user_id' ,'id' ,'image','created_at','car_name','model', 'version', 'year', 'engine', 'fuel', 'body', 'transmission', "gear_number", 'color', 'seat_number', 'door_number', 'milleage', 'power', 'mpg','description', 'emission_standard', 'location', 'phone_number', 'price']
+        fields = ['user_id' ,'id' ,'image_key','created_at','car_name','model', 'version', 'year', 'engine', 'fuel', 'body', 'transmission', "gear_number", 'color', 'seat_number', 'door_number', 'milleage', 'power', 'mpg','description', 'emission_standard', 'location', 'phone_number', 'price']
 
         def create(self, validated_data):
             instance = self.Meta.model(**validated_data)
