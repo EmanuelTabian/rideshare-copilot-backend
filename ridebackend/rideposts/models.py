@@ -1,8 +1,8 @@
 from django.db import models
 
 
-def file_generate_upload_path(instance, filename):
-    return f"files/{instance.file_name}"
+def file_generate_upload_path(instance, filename, user_id):
+    return f"{user_id}/{instance.file_name}"
 
 class File(models.Model):
     file = models.FileField(

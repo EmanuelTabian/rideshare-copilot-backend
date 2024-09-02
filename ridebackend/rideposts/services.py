@@ -30,7 +30,7 @@ def file_generate_name(original_file_name):
 class FileDirectUploadService:
     # Ensures that if something goes wrong with the methon, all changes are rolled back.
     @transaction.atomic
-    def start(self, *, file_name, file_type):
+    def start(self, *, file_name, file_type, user_id):
         file = File(
             original_file_name = file_name,
             file_name=file_generate_name(file_name),
@@ -40,7 +40,7 @@ class FileDirectUploadService:
 
         file.full_clean()
         file.save()
-        upload_path = file_generate_upload_path(file, file.file_name)
+        upload_path = file_generate_upload_path(file, file.file_name, user_id)
 
         file.file = file.file.field.attr_class(file, file.file.field, upload_path)
         file.save()
