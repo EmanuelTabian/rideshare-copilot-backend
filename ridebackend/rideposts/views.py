@@ -5,11 +5,11 @@ from rest_framework.views import APIView
 from .models import File
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import serializers
-from .services import FileDirectUploadService, s3_generate_presigned_get
+from .services import FileDirectUploadService, s3_generate_presigned_get, s3_generate_presigned_delete
 
 class FileDirectUploadStartApi(APIView):
     permission_classes = [IsAuthenticated]
-
+ 
     class InputSerializer(serializers.Serializer):
         file_name = serializers.CharField()
         file_type = serializers.CharField()
@@ -46,4 +46,8 @@ class GetImageByKey(APIView):
     def get(self, request, file_key):
         url = s3_generate_presigned_get(file_key)
         return Response({'url': url})
+    
+
+
+
 
