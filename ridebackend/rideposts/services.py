@@ -50,7 +50,8 @@ def s3_generate_presigned_delete(file_key):
     )
 
     presigned_url = client.generate_presigned_url(ClientMethod='delete_object', Params={
-        "Bucket": f"{os.getenv('AWS_STORAGE_BUCKET_NAME')}--{os.getenv('AWS_AZ_ID')}--x-s3.s3express-{os.getenv('AWS_AZ_ID')}.eu-west-2.amazonaws.com",
+        # "Bucket": f"{os.getenv('AWS_STORAGE_BUCKET_NAME')}--{os.getenv('AWS_AZ_ID')}--x-s3.s3express-{os.getenv('AWS_AZ_ID')}.eu-west-2.amazonaws.com",
+        "Bucket": settings.AWS_STORAGE_BUCKET_NAME,
         "Key": file_key,
     }, ExpiresIn=3600,
     HttpMethod='DELETE')
