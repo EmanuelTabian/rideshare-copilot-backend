@@ -2,9 +2,11 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import File
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import serializers
+import requests
+
+from .models import File
 from .services import FileDirectUploadService, s3_generate_presigned_get, s3_generate_presigned_delete
 
 class FileDirectUploadStartApi(APIView):
@@ -47,7 +49,13 @@ class GetImageByKey(APIView):
         url = s3_generate_presigned_get(file_key)
         return Response({'url': url})
     
+class DeleteImageByKey(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def delete(self, request, file_key):
+        url = s3_generate_presigned_delete(file_key)
+        requests.delete(url)
 
-
+        return Response()
+    
 
