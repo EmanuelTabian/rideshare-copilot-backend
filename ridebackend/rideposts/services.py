@@ -5,6 +5,9 @@ from django.conf import settings
 import pathlib
 from uuid import uuid4
 import boto3
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 def s3_generate_presigned_post(*, file_path, file_type):
@@ -37,6 +40,21 @@ def s3_generate_presigned_get(file_key):
      },
      ExpiresIn=3600)
      return presigned_url
+
+def s3_generate_presigned_delete(file_key):
+    client =  boto3.client(
+          service_name="s3",
+        aws_access_key_id=settings.AWS_S3_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_S3_SECRET_ACCESS_KEY,
+        region_name=settings.AWS_S3_REGION_NAME
+    )
+
+    presigned_url = client.generate_presigned_url(ClientMethod='delete_object', Params={
+        "Bucket": f"{os.getenv('AWS_STORAGE_BUCKET_NAME')}--{os.getenv('AWS_AZ_ID')}--x-s3.s3express-{os.getenv('AWS_AZ_ID')}.eu-west-2.amazonaws.com",
+        "Key": file_key,
+    }, ExpiresIn=3600)
+
+    return presigned_url
 
 def file_generate_name(original_file_name):
     mime_type = pathlib.Path(original_file_name).suffix
