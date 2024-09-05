@@ -41,18 +41,24 @@ class FileDirectUploadFinishApi(APIView):
         service.finish(file=file)
 
         return Response({"id": file.id})
-class EditImageByKey(APIView):
+
+#  def start_edit(self, *, file_id, file_name, file_type, user_id):
+class EditImage(APIView):
     permission_classes = [IsAuthenticated]
-
-    def put(self, request, file_key):
-        url = s3_generate_presigned_put(file_key)
-
-        file = request.FILES    
-
-        requests.put(url, data=request.data)
-
-        return Response()
+    class InputSerializer(serializers.Serializer):
+        file_name = serializers.CharField()
+        file_type = serializers.CharField()
+        file_id = serializers.CharField()
     
+    def put(self, request):
+        user = request.user
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        service = FileDirectUploadService()
+        presigned_data = service.start_edit(**serializer.validated_data, user_id=user.id)
+
+        return Response(data=presigned_data)
+
 class GetImageByKey(APIView):
     permission_classes = [IsAuthenticated]
 
