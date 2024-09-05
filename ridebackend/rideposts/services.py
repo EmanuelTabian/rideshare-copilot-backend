@@ -27,22 +27,22 @@ def s3_generate_presigned_post(*, file_path, file_type):
     return presigned_data
 
 def s3_generate_presigned_get(file_key):
-     client = boto3.client(
+    client = boto3.client(
         service_name="s3",
         aws_access_key_id=settings.AWS_S3_ACCESS_KEY_ID,
         aws_secret_access_key=settings.AWS_S3_SECRET_ACCESS_KEY,
         region_name=settings.AWS_S3_REGION_NAME
     )
      
-     presigned_url = client.generate_presigned_url('get_object', Params={
+    presigned_url = client.generate_presigned_url('get_object', Params={
          "Bucket": settings.AWS_STORAGE_BUCKET_NAME,
          "Key": file_key
      },
      ExpiresIn=3600)
-     return presigned_url
+    return presigned_url
 
 def s3_generate_presigned_delete(file_key):
-    client =  boto3.client(
+    client = boto3.client(
         service_name="s3",
         aws_access_key_id=settings.AWS_S3_ACCESS_KEY_ID,
         aws_secret_access_key=settings.AWS_S3_SECRET_ACCESS_KEY,
