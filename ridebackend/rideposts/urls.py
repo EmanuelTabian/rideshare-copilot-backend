@@ -7,5 +7,4 @@ urlpatterns = [
     path('get-image-by-file-key/<path:file_key>', GetImageByKey.as_view()),
     path('delete-image-by-file-key/<path:file_key>', DeleteImageByKey.as_view()),
     path('put-image-by-file-key/<path:file_key>', EditImageByKey.as_view()),
-
 ]

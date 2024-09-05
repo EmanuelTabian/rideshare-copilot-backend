@@ -49,7 +49,7 @@ def s3_generate_presigned_put(file_key):
     region_name=settings.AWS_S3_REGION_NAME
     )
 
-    presigned_url = client.generate_presinged_url('put_object', Params={
+    presigned_url = client.generate_presigned_url('put_object', Params={
         "ACL":settings.AWS_DEFAULT_ACL,
         "Bucket": settings.AWS_STORAGE_BUCKET_NAME,
         "Key": file_key
