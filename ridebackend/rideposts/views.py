@@ -63,6 +63,7 @@ class EditImageByKey(APIView):
 
     def put(self, request, file_key):
         url = s3_generate_presigned_put(file_key)
+        
         requests.put(url, data=request.data)
 
         return Response()

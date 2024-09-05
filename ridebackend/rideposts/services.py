@@ -53,7 +53,8 @@ def s3_generate_presigned_put(file_key):
         "ACL":settings.AWS_DEFAULT_ACL,
         "Bucket": settings.AWS_STORAGE_BUCKET_NAME,
         "Key": file_key
-    }, ExpiresIn=3600)
+    }, ExpiresIn=3600,
+    HttpMethod="PUT")
 
     return presigned_url
 
@@ -108,3 +109,25 @@ class FileDirectUploadService:
         file.save()
 
         return file
+    
+    @transaction.atomic
+    def start_edit(self, *, file_id, file_name, file_type, user_id):
+        file = File.objects.get(id=file_id)
+        file.original_file_name = file_name
+        file.file_name = file_generate_name(file_name)
+
+        # Generate a new file path as the file name changes
+        upload_path = file_generate_upload_path(file, file.file_name, user_id)
+
+        # Update the file path in the database with the new upload path
+        file.file = file.file.field.attr_class(file, file.file.field, upload_path)
+
+        # Save
+        file.full_clean()
+        file.save()
+
+        # Generate presigned url for data modification 
+        presigned_url = s3_generate_presigned_put(file_key=upload_path)
+
+        return {"id": file.id, "url": presigned_url}
+
