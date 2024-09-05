@@ -7,7 +7,7 @@ from rest_framework import serializers
 import requests
 
 from .models import File
-from .services import FileDirectUploadService, s3_generate_presigned_get, s3_generate_presigned_delete
+from .services import FileDirectUploadService, s3_generate_presigned_get, s3_generate_presigned_delete, s3_generate_presigned_put
 
 class FileDirectUploadStartApi(APIView):
     permission_classes = [IsAuthenticated]
@@ -55,6 +55,15 @@ class DeleteImageByKey(APIView):
     def delete(self, request, file_key):
         url = s3_generate_presigned_delete(file_key)
         requests.delete(url)
+
+        return Response()
+    
+class EditImageByKey(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, file_key):
+        url = s3_generate_presigned_put(file_key)
+        requests.put(url, data=request.data)
 
         return Response()
     
