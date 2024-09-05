@@ -112,7 +112,11 @@ class FileDirectUploadService:
     
     @transaction.atomic
     def start_edit(self, *, file_id, file_name, file_type, user_id):
-        file = File.objects.get(id=file_id)
+
+        try:
+            file = File.objects.get(id=file_id)
+        except:
+            raise ValueError("THe file with the specified ID does not exist")    
         file.original_file_name = file_name
         file.file_name = file_generate_name(file_name)
         file.file_type = file_type
