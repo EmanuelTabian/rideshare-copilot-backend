@@ -41,6 +41,17 @@ class FileDirectUploadFinishApi(APIView):
         service.finish(file=file)
 
         return Response({"id": file.id})
+class EditImageByKey(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, file_key):
+        url = s3_generate_presigned_put(file_key)
+
+        file = request.FILES    
+
+        requests.put(url, data=request.data)
+
+        return Response()
     
 class GetImageByKey(APIView):
     permission_classes = [IsAuthenticated]
@@ -58,14 +69,5 @@ class DeleteImageByKey(APIView):
 
         return Response()
     
-class EditImageByKey(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def put(self, request, file_key):
-        url = s3_generate_presigned_put(file_key)
-        
-        requests.put(url, data=request.data)
-
-        return Response()
     
 

@@ -115,6 +115,7 @@ class FileDirectUploadService:
         file = File.objects.get(id=file_id)
         file.original_file_name = file_name
         file.file_name = file_generate_name(file_name)
+        file.file_type = file_type
 
         # Generate a new file path as the file name changes
         upload_path = file_generate_upload_path(file, file.file_name, user_id)
