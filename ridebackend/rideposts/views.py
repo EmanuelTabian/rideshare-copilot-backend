@@ -54,7 +54,6 @@ class DeleteImageByKey(APIView):
 
     def delete(self, request, file_key):
         url = s3_generate_presigned_delete(file_key)
-        print(url)
         requests.delete(url)
 
         return Response()
