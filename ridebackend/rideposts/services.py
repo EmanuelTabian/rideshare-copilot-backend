@@ -115,7 +115,7 @@ class FileDirectUploadService:
         try:
             file = File.objects.get(id=file_id)
         except:
-            raise ValueError("The file with the specified image key does not exist")    
+            raise ValueError("The file with the specified ID does not exist")    
         file.original_file_name = file_name
         file.file_name = file_generate_name(file_name)
         file.file_type = file_type

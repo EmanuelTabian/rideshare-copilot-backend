@@ -7,6 +7,7 @@ from rideposts.models import File
 class CarPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     image_key = models.CharField(max_length=255, null=True, blank=True)
+    image_id =  models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField('Created at', auto_now_add=True)
     car_name = models.CharField(max_length=255)
     model = models.CharField(max_length=255)
