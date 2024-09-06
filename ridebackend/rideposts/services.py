@@ -41,19 +41,18 @@ def s3_generate_presigned_get(file_key):
      ExpiresIn=3600)
     return presigned_url
 
-def s3_generate_presigned_put(*, file_key, file_type):
+def s3_generate_presigned_put(file_key, file_type):
     client = boto3.client(
     service_name="s3",
     aws_access_key_id=settings.AWS_S3_ACCESS_KEY_ID,
     aws_secret_access_key=settings.AWS_S3_SECRET_ACCESS_KEY,
     region_name=settings.AWS_S3_REGION_NAME
     )
-
+    print(file_type)
     presigned_url = client.generate_presigned_url('put_object', Params={
         "Bucket": settings.AWS_STORAGE_BUCKET_NAME,
         "Key": file_key,
-        "acl":settings.AWS_DEFAULT_ACL,
-        "Content-Type": file_type 
+        "ContentType": file_type
     }, ExpiresIn=3600,
     HttpMethod="PUT")
 
@@ -121,18 +120,12 @@ class FileDirectUploadService:
         file.file_name = file_generate_name(file_name)
         file.file_type = file_type
 
-        # Generate a new file path as the file name changes
-        upload_path = file_generate_upload_path(file, file.file_name, user_id)
-
-        # Update the file path in the database with the new upload path
-        file.file = file.file.field.attr_class(file, file.file.field, upload_path)
-
         # Save
         file.full_clean()
         file.save()
 
         # Generate presigned url for data modification 
-        presigned_url = s3_generate_presigned_put(file_path=file_key, file_type=file_type)
+        presigned_url = s3_generate_presigned_put(file_key=file_key, file_type=file.file_type)
 
-        return {"id": file.id, "url": presigned_url}
+        return {"id": file.id, 'url': presigned_url}
 
