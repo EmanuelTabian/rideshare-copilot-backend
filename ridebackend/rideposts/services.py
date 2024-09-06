@@ -111,9 +111,9 @@ class FileDirectUploadService:
         return file
     
     @transaction.atomic
-    def start_edit(self, *, image_key, file_name ,file_type, user_id):
+    def start_edit(self, *, file_id, file_name ,file_type, user_id):
         try:
-            file = File.objects.get(file=image_key)
+            file = File.objects.get(id=file_id)
         except:
             raise ValueError("The file with the specified image key does not exist")    
         file.original_file_name = file_name
