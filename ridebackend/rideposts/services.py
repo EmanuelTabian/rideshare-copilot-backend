@@ -75,9 +75,8 @@ def s3_generate_presigned_delete(file_key):
 
     return presigned_url
 
-def file_generate_name(original_file_name):
-    mime_type = pathlib.Path(original_file_name).suffix
-    return f"{uuid4().hex}{mime_type}"
+def file_generate_name():
+    return f"{uuid4().hex}"
 
 class FileDirectUploadService:
     # Ensures that if something goes wrong with the methon, all changes are rolled back.
@@ -119,6 +118,12 @@ class FileDirectUploadService:
         file.original_file_name = file_name
         file.file_name = file_generate_name(file_name)
         file.file_type = file_type
+
+        # # Generate a new file path as the file name changes
+        # upload_path = file_generate_upload_path(file, file.file_name, user_id)
+
+        # # Update the file path in the database with the new upload path
+        # file.file = file.file.field.attr_class(file, file.file.field, upload_path)
 
         # Save
         file.full_clean()
