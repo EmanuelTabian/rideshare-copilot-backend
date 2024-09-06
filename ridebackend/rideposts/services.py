@@ -50,7 +50,6 @@ def s3_generate_presigned_put(file_key):
     )
 
     presigned_url = client.generate_presigned_url('put_object', Params={
-        "ACL":settings.AWS_DEFAULT_ACL,
         "Bucket": settings.AWS_STORAGE_BUCKET_NAME,
         "Key": file_key
     }, ExpiresIn=3600,
@@ -111,7 +110,7 @@ class FileDirectUploadService:
         return file
     
     @transaction.atomic
-    def start_edit(self, *, file_id, file_name ,file_type, user_id):
+    def start_edit(self, *, file_id, file_key,file_name ,file_type, user_id):
         try:
             file = File.objects.get(id=file_id)
         except:
@@ -131,7 +130,7 @@ class FileDirectUploadService:
         file.save()
 
         # Generate presigned url for data modification 
-        presigned_url = s3_generate_presigned_put(file_key=upload_path)
+        presigned_url = s3_generate_presigned_put(file_key=file_key)
 
         return {"id": file.id, "url": presigned_url}
 

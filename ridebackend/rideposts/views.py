@@ -49,6 +49,7 @@ class EditImage(APIView):
         file_name = serializers.CharField()
         file_type = serializers.CharField()
         file_id = serializers.CharField()
+        file_key = serializers.CharField()
     
     def put(self, request):
         user = request.user
