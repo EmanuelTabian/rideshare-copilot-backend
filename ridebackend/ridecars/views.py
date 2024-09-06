@@ -5,6 +5,7 @@ from .serializers import CarPostSerializer
 
 from rest_framework.permissions import IsAuthenticated
 from .models import CarPost
+from rideposts.models import File
 class AddRidePost(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -56,11 +57,12 @@ class UpdateRidePost(APIView):
 class DeleteRidePost(APIView):
     permission_classes = [IsAuthenticated]
 
-    def delete(self,request, car_post_id):
+    def delete(self,request,*,  car_post_id, image_id):
+        image_entry = get_object_or_404(File, pk=image_id)
         car_post = get_object_or_404(CarPost, pk=car_post_id)
         if car_post.user != request.user:
             return Response({"detail": "You do not have permission to delete this car post."})
-
+        image_entry.delete()
         car_post.delete()
         
         return Response()
