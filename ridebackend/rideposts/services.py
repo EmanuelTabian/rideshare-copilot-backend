@@ -116,7 +116,7 @@ class FileDirectUploadService:
         except:
             raise ValueError("The file with the specified ID does not exist")    
         file.original_file_name = file_name
-        file.file_name = file_generate_name(file_name)
+        file.file_name = file_generate_name()
         file.file_type = file_type
 
         # # Generate a new file path as the file name changes
