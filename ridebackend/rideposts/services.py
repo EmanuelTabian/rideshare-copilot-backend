@@ -84,7 +84,7 @@ class FileDirectUploadService:
     def start(self, *, file_name, file_type, user_id):
         file = File(
             original_file_name = file_name,
-            file_name=file_generate_name(file_name),
+            file_name=file_generate_name(),
             file_type=file_type,
             file=None
         )
