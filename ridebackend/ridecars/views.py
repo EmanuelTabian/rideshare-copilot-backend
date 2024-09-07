@@ -61,16 +61,19 @@ class DeleteRidePost(APIView):
         car_post_id = request.data.get('car_post_id')
         image_id = request.data.get('image_id')
 
-        if car_post_id is None or image_id is None:
+        if car_post_id is None:
             return Response({'detail': "Missing required arguments: car_post_id or image_id"})
 
 
         car_post = get_object_or_404(CarPost, pk=car_post_id)
-        image_entry = get_object_or_404(File, pk=image_id)
         if car_post.user != request.user:
             return Response({"detail": "You do not have permission to delete this car post."})
 
         car_post.delete()
-        image_entry.delete()
         
+        if image_id is not None:
+             image_entry = get_object_or_404(File, pk=image_id)
+             image_entry.delete()
+
+
         return Response()
