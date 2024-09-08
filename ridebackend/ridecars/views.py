@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -24,7 +24,14 @@ class GetAllRidePosts(APIView):
         car_posts = CarPost.objects.all()
         car_posts_length = len(car_posts)
         paginator = Paginator(car_posts, 10)
-        car_posts_by_page = paginator.page(page).object_list
+        try:
+            car_posts_page = paginator.page(page)
+        except PageNotAnInteger:
+            return Response({'error': 'Invalid page number. Page should be an integer!'})
+        except EmptyPage:
+            return Response({'error': "Page not found! The page number you're requesting is out of range!"})
+
+        car_posts_by_page = car_posts_page.object_list
         serializer = CarPostSerializer(car_posts_by_page, many=True)
         return Response({'data': serializer.data, 'count': car_posts_length}) 
 
