@@ -1,9 +1,11 @@
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import CarPostSerializer
-
 from rest_framework.permissions import IsAuthenticated
+
+
+from .serializers import CarPostSerializer
 from .models import CarPost
 from rideposts.models import File
 class AddRidePost(APIView):
@@ -18,10 +20,13 @@ class AddRidePost(APIView):
 class GetAllRidePosts(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request, page):
         car_posts = CarPost.objects.all()
-        serializer = CarPostSerializer(car_posts, many=True)
-        return Response(serializer.data) 
+        car_posts_length = len(car_posts)
+        paginator = Paginator(car_posts, 10)
+        car_posts_by_page = paginator.page(page).object_list
+        serializer = CarPostSerializer(car_posts_by_page, many=True)
+        return Response({'data': serializer.data, 'count': car_posts_length}) 
 
 class GetRidePost(APIView):
     permission_classes = [IsAuthenticated]
