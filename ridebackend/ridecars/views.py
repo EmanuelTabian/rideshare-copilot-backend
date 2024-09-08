@@ -26,6 +26,7 @@ class GetAllRidePosts(APIView):
         paginator = Paginator(car_posts, 10)
         try:
             car_posts_page = paginator.page(page)
+            page_num_string = paginator.page(page)
         except PageNotAnInteger:
             return Response({'error': 'Invalid page number. Page should be an integer!'})
         except EmptyPage:
@@ -33,7 +34,7 @@ class GetAllRidePosts(APIView):
 
         car_posts_by_page = car_posts_page.object_list
         serializer = CarPostSerializer(car_posts_by_page, many=True)
-        return Response({'data': serializer.data, 'count': car_posts_length}) 
+        return Response({'data': serializer.data, 'page_number': page_num_string ,'count': car_posts_length}) 
 
 class GetRidePost(APIView):
     permission_classes = [IsAuthenticated]
