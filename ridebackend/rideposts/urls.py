@@ -1,7 +1,10 @@
 from django.urls import path
-from .views import FileDirectUploadStartApi, FileDirectUploadFinishApi
+from .views import FileDirectUploadStartApi, FileDirectUploadFinishApi,GetImageByKey, DeleteImageByKey, EditImage
 
 urlpatterns = [
     path('upload/direct/start', FileDirectUploadStartApi.as_view()),
     path('upload/direct/finish', FileDirectUploadFinishApi.as_view()),
+    path('get-image-by-file-key/<path:file_key>', GetImageByKey.as_view()),
+    path('delete-image-by-file-key/<path:file_key>', DeleteImageByKey.as_view()),
+    path('put-image', EditImage.as_view()),
 ]

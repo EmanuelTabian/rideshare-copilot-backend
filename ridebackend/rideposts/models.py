@@ -1,9 +1,10 @@
 from django.db import models
-from django.conf import settings
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-
-def file_generate_upload_path(instance, filename):
-    return f"files/{instance.file_name}"
+def file_generate_upload_path(instance, filename, user_id):
+    return f"{os.getenv('AWS_STORAGE_BUCKET_NAME')}--{os.getenv('AWS_AZ_ID')}--x-s3/user-{user_id}/photos/{instance.file_name}"
 
 class File(models.Model):
     file = models.FileField(
