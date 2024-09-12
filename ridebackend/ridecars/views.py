@@ -80,7 +80,7 @@ class DeleteRidePost(APIView):
 
     def delete(self,request):
         car_post_id = request.data.get('car_post_id')
-        image_id = request.data.get('image_id')
+        # image_id = request.data.get('image_id')
 
         if car_post_id is None:
             return Response({'detail': "Missing required arguments: car_post_id or image_id"})
@@ -92,9 +92,4 @@ class DeleteRidePost(APIView):
 
         car_post.delete()
         
-        if image_id is not None:
-             image_entry = get_object_or_404(File, pk=image_id)
-             image_entry.delete()
-
-
         return Response()

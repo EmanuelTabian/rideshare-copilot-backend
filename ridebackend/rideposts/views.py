@@ -74,6 +74,11 @@ class DeleteImageByKey(APIView):
         url = s3_generate_presigned_delete(file_key)
         requests.delete(url)
 
+        image_id = request.data.get('image_id')
+
+        image_entry = get_object_or_404(File, pk=image_id)
+        image_entry.delete()
+
         return Response()
     
     
