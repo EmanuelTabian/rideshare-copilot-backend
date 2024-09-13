@@ -57,10 +57,29 @@ class GetRidePost(APIView):
 class GetUserCarPosts(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request, page):
       user_car_posts = CarPost.objects.all().filter(user=request.user)
-      serializer = CarPostSerializer(user_car_posts,many=True)
-      return Response(serializer.data)
+      car_posts_length = len(user_car_posts)
+      paginator = Paginator(user_car_posts, 10)
+      try:
+         car_posts_page = paginator.page(page)
+      except PageNotAnInteger:
+            return Response({'error': 'Invalid page number. Page should be an integer!'})
+      except EmptyPage:
+            return Response({'error': "Page not found! The page number you're requesting is out of range!"})
+      car_posts_by_page = car_posts_page.object_list
+      serializer = CarPostSerializer(car_posts_by_page, many=True)
+        
+      pagination_details = {
+            'current_page': car_posts_page.number,
+            'total_pages': paginator.num_pages,
+            'has_previous': car_posts_page.has_previous(),
+            'has_next': car_posts_page.has_next(),
+            'previous_page_number': car_posts_page.previous_page_number() if car_posts_page.has_previous() else None,
+            'next_page_number': car_posts_page.next_page_number() if car_posts_page.has_next() else None
+        }
+     
+      return Response({'data': serializer.data, 'count': car_posts_length, 'pagination': pagination_details})
 
 class UpdateRidePost(APIView):
     permission_classes = [IsAuthenticated]
