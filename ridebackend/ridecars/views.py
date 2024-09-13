@@ -26,6 +26,7 @@ class GetAllRidePosts(APIView):
         paginator = Paginator(car_posts, 10)
         try:
             car_posts_page = paginator.page(page)
+          
         except PageNotAnInteger:
             return Response({'error': 'Invalid page number. Page should be an integer!'})
         except EmptyPage:
