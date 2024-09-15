@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import serializers
 import requests
 
+from ridecars.models import CarPost
 from .models import File
 from .services import FileDirectUploadService, s3_generate_presigned_get, s3_generate_presigned_delete, s3_generate_presigned_put
 
@@ -19,10 +20,12 @@ class FileDirectUploadStartApi(APIView):
 
     def post(self,request, *args, **kwargs):
         user = request.user
+        car_post_id = request.data.get('car_post_id')
+        car_post = CarPost.objects.get(id=car_post_id, user=user)
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         service = FileDirectUploadService()
-        presigned_data = service.start(**serializer.validated_data, user_id=user.id)
+        presigned_data = service.start(**serializer.validated_data, user_id=user.id, post=car_post)
 
         return Response(data=presigned_data)
       

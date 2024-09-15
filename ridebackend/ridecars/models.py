@@ -1,6 +1,5 @@
 from django.db import models
 from rideauth.models import User
-from rideposts.models import File
 
 
 # Create your models here.

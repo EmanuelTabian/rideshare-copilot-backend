@@ -81,11 +81,12 @@ def file_generate_name():
 class FileDirectUploadService:
     # Ensures that if something goes wrong with the methon, all changes are rolled back.
     @transaction.atomic
-    def start(self, *, file_name, file_type, user_id):
+    def start(self, *, file_name, file_type, user_id, post):
         file = File(
             original_file_name = file_name,
             file_name=file_generate_name(),
             file_type=file_type,
+            post=post,
             file=None
         )
 
