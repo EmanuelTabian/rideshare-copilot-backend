@@ -100,7 +100,6 @@ class DeleteRidePost(APIView):
 
     def delete(self,request):
         car_post_id = request.data.get('car_post_id')
-        # image_id = request.data.get('image_id')
 
         if car_post_id is None:
             return Response({'detail': "Missing required arguments: car_post_id or image_id"})

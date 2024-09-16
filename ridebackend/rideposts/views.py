@@ -63,11 +63,14 @@ class EditImage(APIView):
 
         return Response(data=presigned_data)
 
-class GetImageByKey(APIView):
+class GetImageByCarPostId(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, file_key):
-        url = s3_generate_presigned_get(file_key)
+    def get(self, request, car_post_id):
+        car_post = CarPost.objects.get(pk=car_post_id, user=request.user)
+        # first() method returns None in case there is no file that matches the post id ForeignKey 
+        file = File.objects.filter(post=car_post).first()
+        url = s3_generate_presigned_get(str(file.file))
         return Response({'url': url})
     
 class DeleteImageByKey(APIView):
