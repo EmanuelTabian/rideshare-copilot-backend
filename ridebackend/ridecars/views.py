@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import CarPostSerializer
 from .models import CarPost
 from rideposts.models import File
+from rideposts.views import DeleteImageByKey
 class AddRidePost(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -99,13 +100,23 @@ class DeleteRidePost(APIView):
     permission_classes = [IsAuthenticated]
 
     def delete(self,request):
+        # Get the car post that will get deleted based on the car post id that will be received
         car_post_id = request.data.get('car_post_id')
 
         if car_post_id is None:
-            return Response({'detail': "Missing required arguments: car_post_id or image_id"})
+            return Response({'detail': "Missing required argument: car_post_id"})
 
 
         car_post = get_object_or_404(CarPost, pk=car_post_id)
+        # Check for a file entry associated with the post, first() will return None if there is no file
+        file = File.objects.filter(post=car_post).first()
+        # Conditionally delete the image from the S3 Bucket
+        if file:
+            # Instanciate an object from DeleteImageBy filekey view
+            delete_image_view = DeleteImageByKey.as_view()
+            # Delete the image based on the file key accessed through the foreign key
+            delete_image_view(request, file_key=file.file)
+
         if car_post.user != request.user:
             return Response({"detail": "You do not have permission to delete this car post."})
 
