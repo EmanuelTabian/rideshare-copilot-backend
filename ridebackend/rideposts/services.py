@@ -121,27 +121,18 @@ class FileDirectUploadService:
         return file
     
     @transaction.atomic
-    def start_edit(self, *, file_id, file_key,file_name ,file_type, user_id):
-        try:
-            file = File.objects.get(id=file_id)
-        except:
-            raise ValueError("The file with the specified ID does not exist")    
+    def start_edit(self, *, file, file_name ,file_type):
+           
         file.original_file_name = file_name
         file.file_name = file_generate_name()
         file.file_type = file_type
-
-        # # Generate a new file path as the file name changes
-        # upload_path = file_generate_upload_path(file, file.file_name, user_id)
-
-        # # Update the file path in the database with the new upload path
-        # file.file = file.file.field.attr_class(file, file.file.field, upload_path)
 
         # Save
         file.full_clean()
         file.save()
 
         # Generate presigned url for data modification 
-        presigned_url = s3_generate_presigned_put(file_key=file_key, file_type=file.file_type)
+        presigned_url = s3_generate_presigned_put(file_key=file.file, file_type=file.file_type)
 
-        return {"id": file.id, 'url': presigned_url}
+        return presigned_url
 

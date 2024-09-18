@@ -4,11 +4,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-
+import requests
 from .serializers import CarPostSerializer
 from .models import CarPost
 from rideposts.models import File
-from rideposts.services import delete_image
+from rideposts.services import delete_image, FileDirectUploadService
 class AddRidePost(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -85,12 +85,31 @@ class GetUserCarPosts(APIView):
 class UpdateRidePost(APIView):
     permission_classes = [IsAuthenticated]
     
-    def patch(self, request, car_post_id):
+    def put(self, request, car_post_id):
+        car_post_id = request.data.get('car_post_id')
         car_post = get_object_or_404(CarPost, pk=car_post_id)
 
         if car_post.user != request.user:
             return Response({"detail": "You do not have permission to edit this car post."})
         
+        file = File.objects.filter(post=car_post).first()
+        if file and 'image' in request.FILES:
+           image = request.FILES['image']
+           service = FileDirectUploadService()   
+           presigned_put_url = service.start_edit(
+               file=file, 
+               file_name=image.name,
+               file_type=image.content_type
+                                                  )
+           response = requests.put(
+               presigned_put_url,
+               data=image,
+               headers={"Content-Type": image.content_type}
+           )
+           if response.status_code != 200:
+               return Response({"Message": "Failed to upload the image to S3."}, status=400)
+
+
         serializer = CarPostSerializer(car_post, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
