@@ -2,6 +2,7 @@ from django.db import transaction
 from .models import File, file_generate_upload_path
 from django.utils import timezone
 from django.conf import settings
+import requests
 import pathlib
 from uuid import uuid4
 import boto3
@@ -74,6 +75,15 @@ def s3_generate_presigned_delete(file_key):
     HttpMethod='DELETE')
 
     return presigned_url
+
+def delete_image(file):
+    url = s3_generate_presigned_delete(file.file)
+    response = requests.delete(url)
+
+    if response.status_code != 204:
+        raise Exception(f"Failed to delete the image from S3: {response.status_code}")
+    
+    
 
 def file_generate_name():
     return f"{uuid4().hex}"
