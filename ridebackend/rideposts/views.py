@@ -73,14 +73,7 @@ class GetImageByCarPostId(APIView):
         url = s3_generate_presigned_get(str(file.file))
         return Response({'url': url})
     
-class DeleteImageByKey(APIView):
-    permission_classes = [IsAuthenticated]
 
-    def delete(self, request, file_key):
-        url = s3_generate_presigned_delete(file_key)
-        requests.delete(url)
-
-        return Response()
     
     
 
