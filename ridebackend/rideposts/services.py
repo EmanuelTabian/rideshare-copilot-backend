@@ -122,7 +122,6 @@ class FileDirectUploadService:
     
     @transaction.atomic
     def start_edit(self, *, file, file_name ,file_type):
-           
         file.original_file_name = file_name
         file.file_name = file_generate_name()
         file.file_type = file_type
@@ -132,7 +131,6 @@ class FileDirectUploadService:
         file.save()
 
         # Generate presigned url for data modification 
-        presigned_url = s3_generate_presigned_put(file_key=file.file, file_type=file.file_type)
-
+        presigned_url = s3_generate_presigned_put(file_key=str(file.file), file_type=str(file.file_type))
         return presigned_url
 

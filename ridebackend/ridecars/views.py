@@ -85,16 +85,17 @@ class GetUserCarPosts(APIView):
 class UpdateRidePost(APIView):
     permission_classes = [IsAuthenticated]
     
-    def put(self, request, car_post_id):
-        car_post_id = request.data.get('car_post_id')
+    def put(self, request, car_post_id, *args, **kwargs):
         car_post = get_object_or_404(CarPost, pk=car_post_id)
-
         if car_post.user != request.user:
-            return Response({"detail": "You do not have permission to edit this car post."})
+            return Response({"Message": "You do not have permission to edit this car post."})
         
         file = File.objects.filter(post=car_post).first()
+      
+       
         if file and 'image' in request.FILES:
            image = request.FILES['image']
+          
            service = FileDirectUploadService()   
            presigned_put_url = service.start_edit(
                file=file, 
@@ -121,7 +122,6 @@ class DeleteRidePost(APIView):
     def delete(self,request):
         # Get the car post that will get deleted based on the car post id that will be received
         car_post_id = request.data.get('car_post_id')
-        print(car_post_id)
         if car_post_id is None:
             return Response({'detail': "Missing required argument: car_post_id"})
 
