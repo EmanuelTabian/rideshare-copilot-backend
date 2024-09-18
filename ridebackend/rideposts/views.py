@@ -45,24 +45,6 @@ class FileDirectUploadFinishApi(APIView):
 
         return Response({"id": file.id})
 
-#  def start_edit(self, *, file_id, file_name, file_type, user_id):
-class EditImage(APIView):
-    permission_classes = [IsAuthenticated]
-    class InputSerializer(serializers.Serializer):
-        file_name = serializers.CharField()
-        file_type = serializers.CharField()
-        file_id = serializers.CharField()
-        file_key = serializers.CharField()
-    
-    def put(self, request):
-        user = request.user
-        serializer = self.InputSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        service = FileDirectUploadService()
-        presigned_data = service.start_edit(**serializer.validated_data, user_id=user.id)
-
-        return Response(data=presigned_data)
-
 class GetImageByCarPostId(APIView):
     permission_classes = [IsAuthenticated]
 
