@@ -91,12 +91,12 @@ class UpdateRidePost(APIView):
             return Response({"Message": "You do not have permission to edit this car post."})
         
         file = File.objects.filter(post=car_post).first()
-      
+        service = FileDirectUploadService()   
+        print(file)
        
         if file and 'image' in request.FILES:
            image = request.FILES['image']
           
-           service = FileDirectUploadService()   
            presigned_put_url = service.start_edit(
                file=file, 
                file_name=image.name,
@@ -109,7 +109,17 @@ class UpdateRidePost(APIView):
            )
            if response.status_code != 200:
                return Response({"Message": "Failed to upload the image to S3."}, status=400)
-
+           
+        if not file and 'image' in request.FILES:
+           image = request.FILES['image']
+    # def start(self, *, file_name, file_type, user_id, post):
+           presigned_post_url = service.start(
+                file_name=image.name,
+                file_type=image.content_type,
+                user_id=request.user,
+                post=car_post
+           )
+        
 
         serializer = CarPostSerializer(car_post, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
