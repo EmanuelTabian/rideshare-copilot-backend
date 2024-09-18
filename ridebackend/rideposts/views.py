@@ -68,8 +68,10 @@ class GetImageByCarPostId(APIView):
 
     def get(self, request, car_post_id):
         car_post = CarPost.objects.get(pk=car_post_id, user=request.user)
-        # first() method returns None in case there is no file that matches the post id ForeignKey 
         file = File.objects.filter(post=car_post).first()
+        if not file:
+            return Response({'message': 'The car post contains no image!'})
+        # first() method returns None in case there is no file that matches the post id ForeignKey 
         url = s3_generate_presigned_get(str(file.file))
         return Response({'url': url})
     
