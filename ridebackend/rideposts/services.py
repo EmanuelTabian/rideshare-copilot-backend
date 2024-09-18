@@ -77,7 +77,7 @@ def s3_generate_presigned_delete(file_key):
     return presigned_url
 
 def delete_image(file):
-    url = s3_generate_presigned_delete(file.file)
+    url = s3_generate_presigned_delete(str(file.file))
     response = requests.delete(url)
 
     if response.status_code != 204:
