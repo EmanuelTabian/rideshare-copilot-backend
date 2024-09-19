@@ -136,8 +136,8 @@ class UpdateRidePost(APIView):
                 return Response({"Message": "Failed to upload the image to S3."}, status=400)
 
         # 5. Mark the uploading process as finished   
-        #    new_file = File.objects.filter(post=car_post).first()
-        #    service.finish(file=new_file)
+           new_file = File.objects.filter(post=car_post).first()
+           service.finish(file=new_file)
         
 
         serializer = CarPostSerializer(car_post, data=request.data, partial=True)
