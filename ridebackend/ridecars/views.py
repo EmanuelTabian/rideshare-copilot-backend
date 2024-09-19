@@ -112,13 +112,32 @@ class UpdateRidePost(APIView):
            
         if not file and 'image' in request.FILES:
            image = request.FILES['image']
-    # def start(self, *, file_name, file_type, user_id, post):
-           presigned_post_url = service.start(
+        #  Translating the same front-end JS image upload process, into Python code.
+        # 1. Get the presigned data via service.start function
+           presigned_post_data = service.start(
                 file_name=image.name,
                 file_type=image.content_type,
-                user_id=request.user,
+                user_id=request.user.id,
                 post=car_post
            )
+           print(presigned_post_data)
+        # 2. Extract the presigned URL and the fields
+           presigned_post_url = presigned_post_data.get('url')
+           fields = presigned_post_data.get('fields')
+        #  2.1 Copying the data as a safety measure
+           form_data = fields.copy()
+        #  2.2 Store the image into a dictionary so it follows the pattern for the S3 Bucket new upload
+           file_data = {'file': image}
+        #   2.3 Expand the 2 dictionaries key-value pairs and concatonate it into a single dictonary
+           upload_file_data = {**form_data, **file_data}
+           print(upload_file_data)
+           
+        # 3. Post request to the presigned post url
+        response = requests.post(presigned_post_url, data=upload_file_data)
+       
+        # 4. Set an error boundary
+        if response.status_code != 204:
+            return Response({"Message": "Failed to upload the image to S3."}, status=400)
         
 
         serializer = CarPostSerializer(car_post, data=request.data, partial=True)
