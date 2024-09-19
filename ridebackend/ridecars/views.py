@@ -133,11 +133,11 @@ class UpdateRidePost(APIView):
            print(upload_file_data)
            
         # 3. Post request to the presigned post url
-        response = requests.post(presigned_post_url, data=upload_file_data)
+           response = requests.post(presigned_post_url, data=upload_file_data)
        
         # 4. Set an error boundary
-        if response.status_code != 204:
-            return Response({"Message": "Failed to upload the image to S3."}, status=400)
+           if response.status_code != 204:
+                return Response({"Message": "Failed to upload the image to S3."}, status=400)
         
 
         serializer = CarPostSerializer(car_post, data=request.data, partial=True)
