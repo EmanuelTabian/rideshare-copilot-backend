@@ -1,13 +1,10 @@
 from django.db import models
 from rideauth.models import User
-from rideposts.models import File
 
 
 # Create your models here.
 class CarPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    image_key = models.CharField(max_length=255, null=True, blank=True)
-    image_id =  models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField('Created at', auto_now_add=True)
     car_name = models.CharField(max_length=255)
     model = models.CharField(max_length=255)
@@ -27,7 +24,7 @@ class CarPost(models.Model):
     description =  models.CharField(max_length=255, null=True, blank=True)
     emission_standard = models.CharField(max_length=255)
     location = models.CharField(max_length=255, null=True, blank=True)
-    phone_number = models.IntegerField()
+    contact = models.CharField(max_length=255, null=True, blank=True)
     price = models.IntegerField()
 
 

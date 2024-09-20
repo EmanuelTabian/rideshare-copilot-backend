@@ -2,6 +2,7 @@ from django.db import transaction
 from .models import File, file_generate_upload_path
 from django.utils import timezone
 from django.conf import settings
+import requests
 import pathlib
 from uuid import uuid4
 import boto3
@@ -75,17 +76,27 @@ def s3_generate_presigned_delete(file_key):
 
     return presigned_url
 
+def delete_image(file):
+    url = s3_generate_presigned_delete(str(file.file))
+    response = requests.delete(url)
+
+    if response.status_code != 204:
+        raise Exception(f"Failed to delete the image from S3: {response.status_code}")
+    
+    
+
 def file_generate_name():
     return f"{uuid4().hex}"
 
 class FileDirectUploadService:
     # Ensures that if something goes wrong with the methon, all changes are rolled back.
     @transaction.atomic
-    def start(self, *, file_name, file_type, user_id):
+    def start(self, *, file_name, file_type, user_id, post):
         file = File(
             original_file_name = file_name,
             file_name=file_generate_name(),
             file_type=file_type,
+            post=post,
             file=None
         )
 
@@ -110,27 +121,16 @@ class FileDirectUploadService:
         return file
     
     @transaction.atomic
-    def start_edit(self, *, file_id, file_key,file_name ,file_type, user_id):
-        try:
-            file = File.objects.get(id=file_id)
-        except:
-            raise ValueError("The file with the specified ID does not exist")    
+    def start_edit(self, *, file, file_name ,file_type):
         file.original_file_name = file_name
         file.file_name = file_generate_name()
         file.file_type = file_type
-
-        # # Generate a new file path as the file name changes
-        # upload_path = file_generate_upload_path(file, file.file_name, user_id)
-
-        # # Update the file path in the database with the new upload path
-        # file.file = file.file.field.attr_class(file, file.file.field, upload_path)
 
         # Save
         file.full_clean()
         file.save()
 
         # Generate presigned url for data modification 
-        presigned_url = s3_generate_presigned_put(file_key=file_key, file_type=file.file_type)
-
-        return {"id": file.id, 'url': presigned_url}
+        presigned_url = s3_generate_presigned_put(file_key=str(file.file), file_type=str(file.file_type))
+        return presigned_url
 

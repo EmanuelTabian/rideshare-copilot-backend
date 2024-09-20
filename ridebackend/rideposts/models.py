@@ -1,4 +1,5 @@
 from django.db import models
+from ridecars.models import CarPost
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -7,6 +8,7 @@ def file_generate_upload_path(instance, filename, user_id):
     return f"{os.getenv('AWS_STORAGE_BUCKET_NAME')}--{os.getenv('AWS_AZ_ID')}--x-s3/user-{user_id}/photos/{instance.file_name}"
 
 class File(models.Model):
+    post = models.ForeignKey(CarPost, on_delete=models.CASCADE, null=True, blank=True)
     file = models.FileField(
         upload_to=file_generate_upload_path,
         blank=True,
@@ -19,6 +21,7 @@ class File(models.Model):
     file_type = models.CharField(max_length=255)
 
     upload_finished_at = models.DateTimeField(blank=True, null=True)
+
 
     @property 
     def is_valid(self):
