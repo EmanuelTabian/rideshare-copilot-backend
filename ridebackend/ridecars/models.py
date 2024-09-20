@@ -24,7 +24,7 @@ class CarPost(models.Model):
     description =  models.CharField(max_length=255, null=True, blank=True)
     emission_standard = models.CharField(max_length=255)
     location = models.CharField(max_length=255, null=True, blank=True)
-    phone_number = models.IntegerField()
+    contact = models.CharField(max_length=255, null=True, blank=True)
     price = models.IntegerField()
 
 
