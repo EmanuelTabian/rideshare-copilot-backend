@@ -1,12 +1,10 @@
-
 from django.contrib import admin
-from django.urls import path, include
-from rest_framework_simplejwt import views as jwt_views
+from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('rideauth.urls')),
-    path('api/', include('ridecalc.urls')),
-    path('api/', include('rideposts.urls')),
-    path('api/', include('ridecars.urls'))
+    path("admin/", admin.site.urls),
+    path("api/", include("rideauth.urls")),
+    path("api/", include("ridecalc.urls")),
+    path("api/", include("rideposts.urls")),
+    path("api/", include("ridecars.urls")),
 ]

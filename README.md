@@ -149,3 +149,23 @@ To run the project locally, follow the setup and installation steps mentioned ab
 ```bash
 python manage.py runserver
 ```
+
+## Dev Tips
+
+1. Run isort [filename.py] to sort the imports, or isort . to apply it for the entire project. Run isort --atomic [filename.py] or . to make sure the modifications don't introduce syntax errors.
+   Note: if you install isort VS Code Extention, use Shift + Alt + 0 to format imports or add:
+
+"[python]": {
+"editor.defaultFormatter": "ms-python.black-formatter",
+"editor.formatOnSave": true,
+"editor.codeActionsOnSave": {
+"source.organizeImports": true
+},
+},
+"isort.args":["--profile", "black"],
+
+This will automatically sort imports on save.
+
+2. Run black . (inside of the root project folder) or mention a specific file to format code (simmilar to prettier for JS)
+
+3. Use flake8 [filename] or flake8 . (applied for current directory) to check for code errors
