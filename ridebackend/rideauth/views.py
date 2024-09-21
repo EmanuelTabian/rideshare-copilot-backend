@@ -16,24 +16,28 @@ from .serializers import UserSerializer
 load_dotenv()
 # Create your views here.
 
+
 class RegisterView(APIView):
     authentication_classes = []
-    permission_classes = []  
+    permission_classes = []
 
-    def post(self,request):
+    def post(self, request):
         serializer = UserSerializer(data=request.data)
-        password_validation.validate_password(request.data['password'], password_validators=None)
+        password_validation.validate_password(
+            request.data["password"], password_validators=None
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
 
+
 class LoginView(APIView):
     authentication_classes = []
-    permission_classes = [] 
+    permission_classes = []
 
-    def post (self,request):
-        email = request.data['email']
-        password = request.data['password']
+    def post(self, request):
+        email = request.data["email"]
+        password = request.data["password"]
         # user = User.objects.filter(email=email).first()
         user = authenticate(email=email, password=password)
 
@@ -42,21 +46,20 @@ class LoginView(APIView):
 
         if not user.check_password(password):
             raise AuthenticationFailed("Incorrect password")
-        
+
         payload = {
-            'id': user.id,
-            'exp': datetime.now(timezone.utc) + timedelta(minutes=60),
-            'iat': datetime.now(timezone.utc)
+            "id": user.id,
+            "exp": datetime.now(timezone.utc) + timedelta(minutes=60),
+            "iat": datetime.now(timezone.utc),
         }
-        token = jwt.encode(payload, os.getenv('TOKEN_SECRET'), algorithm='HS256')
+        token = jwt.encode(payload, os.getenv("TOKEN_SECRET"), algorithm="HS256")
 
         response = Response()
-        response.set_cookie(key='jwt', value=token, httponly=True)
-        response.data = {
-            'jwt': token
-        }
+        response.set_cookie(key="jwt", value=token, httponly=True)
+        response.data = {"jwt": token}
         return response
-    
+
+
 class UserView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -65,19 +68,23 @@ class UserView(APIView):
         serializer = UserSerializer(user)
 
         return Response(serializer.data)
-    
+
+
 class UpdateUserView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def put(self,request):
+    def put(self, request):
         user = request.user
-        if 'password' in request.data:
-            password_validation.validate_password(request.data['password'], password_validators=None)
+        if "password" in request.data:
+            password_validation.validate_password(
+                request.data["password"], password_validators=None
+            )
         serializer = UserSerializer(user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-    
+
+
 class DeleteUserView(APIView):
 
     def delete(self, request):
@@ -86,12 +93,10 @@ class DeleteUserView(APIView):
 
         return Response()
 
+
 class LogoutView(APIView):
     def post(self, request):
         response = Response()
-        response.delete_cookie('jwt')
-        response.data = {
-            'message': 'success'
-        }
+        response.delete_cookie("jwt")
+        response.data = {"message": "success"}
         return response
-    
