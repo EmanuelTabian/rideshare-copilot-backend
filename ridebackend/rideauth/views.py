@@ -3,14 +3,12 @@ from datetime import datetime, timedelta, timezone
 
 import jwt
 from django.contrib.auth import authenticate, password_validation
-from django.shortcuts import render
 from dotenv import load_dotenv
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import User
 from .serializers import UserSerializer
 
 load_dotenv()
