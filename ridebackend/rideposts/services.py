@@ -1,13 +1,16 @@
-from django.db import transaction
-from .models import File, file_generate_upload_path
-from django.utils import timezone
-from django.conf import settings
-import requests
+import os
 import pathlib
 from uuid import uuid4
+
 import boto3
-import os
+import requests
+from django.conf import settings
+from django.db import transaction
+from django.utils import timezone
 from dotenv import load_dotenv
+
+from .models import File, file_generate_upload_path
+
 load_dotenv()
 
 

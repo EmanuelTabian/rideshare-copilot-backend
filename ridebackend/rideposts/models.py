@@ -1,7 +1,10 @@
-from django.db import models
-from ridecars.models import CarPost
 import os
+
+from django.db import models
 from dotenv import load_dotenv
+
+from ridecars.models import CarPost
+
 load_dotenv()
 
 def file_generate_upload_path(instance, filename, user_id):

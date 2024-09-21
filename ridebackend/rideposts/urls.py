@@ -1,5 +1,7 @@
 from django.urls import path
-from .views import FileDirectUploadStartApi, FileDirectUploadFinishApi,GetImageByCarPostId
+
+from .views import (FileDirectUploadFinishApi, FileDirectUploadStartApi,
+                    GetImageByCarPostId)
 
 urlpatterns = [
     path('upload/direct/start', FileDirectUploadStartApi.as_view()),

@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import AddRidePost, GetAllRidePosts, GetRidePost, GetUserCarPosts, UpdateRidePost, DeleteRidePost
 
+from .views import (AddRidePost, DeleteRidePost, GetAllRidePosts, GetRidePost,
+                    GetUserCarPosts, UpdateRidePost)
 
 urlpatterns = [
     path('add-carpost', AddRidePost.as_view()),

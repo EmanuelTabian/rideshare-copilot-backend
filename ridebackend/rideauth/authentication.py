@@ -1,10 +1,12 @@
-import jwt
+import os
 
-from .models import User
+import jwt
+from dotenv import load_dotenv
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
-from dotenv import load_dotenv
-import os
+
+from .models import User
+
 load_dotenv()
 
 

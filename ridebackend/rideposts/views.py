@@ -1,14 +1,16 @@
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
+import requests
+from django.shortcuts import get_object_or_404, render
+from rest_framework import serializers
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import serializers
-import requests
 
 from ridecars.models import CarPost
+
 from .models import File
-from .services import FileDirectUploadService, s3_generate_presigned_get, s3_generate_presigned_delete, s3_generate_presigned_put
+from .services import (FileDirectUploadService, s3_generate_presigned_delete,
+                       s3_generate_presigned_get, s3_generate_presigned_put)
+
 
 class FileDirectUploadStartApi(APIView):
     permission_classes = [IsAuthenticated]

@@ -1,5 +1,7 @@
 from django.db import models
+
 from rideauth.models import User
+
 
 # Create your models here.
 class CalculatorEntry(models.Model):

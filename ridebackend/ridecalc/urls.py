@@ -1,5 +1,7 @@
 from django.urls import path
-from .views import AddCalculatorEntry,GetCalculatorEntries,UpdateCalculatorEntry,DeleteCalculatorEntry
+
+from .views import (AddCalculatorEntry, DeleteCalculatorEntry,
+                    GetCalculatorEntries, UpdateCalculatorEntry)
 
 urlpatterns = [
     path('add-calculator-entry', AddCalculatorEntry.as_view()),

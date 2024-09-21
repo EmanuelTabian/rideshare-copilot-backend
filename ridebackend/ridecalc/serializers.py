@@ -1,5 +1,8 @@
 from rest_framework import serializers
+
 from .models import CalculatorEntry
+
+
 class CalculatorEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = CalculatorEntry

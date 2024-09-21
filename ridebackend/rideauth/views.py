@@ -1,15 +1,18 @@
+import os
+from datetime import datetime, timedelta, timezone
+
+import jwt
+from django.contrib.auth import authenticate, password_validation
 from django.shortcuts import render
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from dotenv import load_dotenv
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth import authenticate, password_validation
-from .serializers import UserSerializer
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .models import User
-import jwt
-from datetime import datetime, timezone, timedelta
-import os
-from dotenv import load_dotenv
+from .serializers import UserSerializer
+
 load_dotenv()
 # Create your views here.
 
