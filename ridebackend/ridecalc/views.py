@@ -28,7 +28,7 @@ class GetCalculatorEntries(APIView):
 
     # This API View will feature nearly the same Paginator mechanism as the GetAllRidePosts API View from ridebackend/ridecars/views.py but we'll use a query parameter instead of a positional argument.
     def get(self, request):
-        calcentries = CalculatorEntry.objects.all().filter(user=request.user)
+        calcentries = CalculatorEntry.objects.all().filter(user=request.user).order_by("-pub_date")
         page = request.query_params.get("page", 1)
         calc_entries_length = len(calcentries)
         paginator = Paginator(calcentries, 10)
@@ -87,12 +87,11 @@ class GetRecentCalculatorEntries(APIView):
             )
 
         days = int(days)
-        print(days)
 
         time_threshold = timezone.now() - timedelta(days=days)
         calcentries = CalculatorEntry.objects.all().filter(
             user=request.user, pub_date__gte=time_threshold
-        )
+        ).order_by("pub_date")
         serializer = CalculatorEntrySerializer(calcentries, many=True)
         return Response(serializer.data)
 
