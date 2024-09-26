@@ -87,7 +87,7 @@ class GetRecentCalculatorEntries(APIView):
             )
 
         days = int(days)
-
+        
         time_threshold = timezone.now() - timedelta(days=days)
         calcentries = CalculatorEntry.objects.all().filter(
             user=request.user, pub_date__gte=time_threshold
