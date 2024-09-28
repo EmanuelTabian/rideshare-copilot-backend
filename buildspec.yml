@@ -1,0 +1,42 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Building started on `date`
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - echo $IMAGE_TAG
+
+      - echo Building the Docker Image started on `date`
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
+      - |
+        DOCKER_BUILDKIT=1 docker build \
+          --build-arg IMAGE_TAG=$IMAGE_TAG \
+          --build-arg SOURCE_VERSION=$CODEBUILD_RESOLVED_SOURCE_VERSION \
+          --progress=plain \
+          --file Dockerfile \
+          --tag $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - cd ${CODEBUILD_SRC_DIR}
+      - echo Writing image definitions file...
+      - |
+        cat > imagedefinitions-rideshare-copilot.json<< EOF
+        [
+          {
+            "name":"server",
+            "imageUri":"${REPOSITORY_URI}:${IMAGE_TAG}"
+          }
+        ]
+        EOF
+artifacts:
+  files:
+    - imagedefinitions-rideshare-copilot.json
