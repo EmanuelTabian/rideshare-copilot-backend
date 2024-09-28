@@ -18,7 +18,7 @@ RUN pip install -r requirements.txt
 
 COPY . /code
 
-RUN  python manage.py collectstatic --no-input
+RUN  python /code/ridebackend/manage.py collectstatic --no-input
 
 EXPOSE 8000
 
