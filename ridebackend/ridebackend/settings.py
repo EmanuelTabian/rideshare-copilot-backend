@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     "ridecalc",
     "rideposts",
     "ridecars",
+    "health_check",                      
+    # "health_check.db",
 ]
 
 STORAGES = {
