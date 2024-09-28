@@ -9,7 +9,7 @@ ENV PYTHONFAULTHANDLER 1
 RUN apt-get update && \
     apt-get install libpq-dev postgresql-client -y && \
     rm -rf /var/lib/apt/lists/*
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip psycopg2-binary 
 
 WORKDIR /code
 
