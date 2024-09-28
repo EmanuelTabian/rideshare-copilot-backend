@@ -22,4 +22,4 @@ RUN  python /code/ridebackend/manage.py collectstatic --no-input
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "python /code/ridebackend/manage.py makemigrations && python /code/ridebackend/manage.py migrate && python /code/ridebackend/manage.py runserver"]
+CMD ["sh", "-c", "python /code/ridebackend/manage.py makemigrations && python /code/ridebackend/manage.py migrate && python /code/ridebackend/manage.py runserver 0.0.0.0:8000"]
