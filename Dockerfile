@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED 1
 ENV PYTHONFAULTHANDLER 1
 
 RUN apt-get update && \
-    apt-get install libpq-dev postgresql-client -y && \
+    apt-get install libpq-dev postgresql-client gcc -y && \
     rm -rf /var/lib/apt/lists/*
 RUN pip install --upgrade pip psycopg2-binary 
 
