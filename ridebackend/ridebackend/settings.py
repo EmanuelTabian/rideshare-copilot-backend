@@ -183,3 +183,29 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "rideauth.User"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,  # Keep existing loggers active
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] {levelname} {name} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'ERROR',  # Capture ERROR and CRITICAL level logs
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+            'stream': 'ext://sys.stderr',  # Send logs to stderr
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console'],  # Use the console handler
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
