@@ -47,7 +47,8 @@ class LoginView(APIView):
 
         payload = {
             "id": user.id,
-            "exp": datetime.now(timezone.utc) + timedelta(minutes=60),
+            # Temporary token expiration time fix, it will last for 24 hours so users don't get logged out as the app doesn't have a refresh token feature, for now.
+            "exp": datetime.now(timezone.utc) + timedelta(hours=24),
             "iat": datetime.now(timezone.utc),
         }
         token = jwt.encode(payload, os.getenv("TOKEN_SECRET"), algorithm="HS256")

@@ -20,6 +20,7 @@ load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 
 
 # Quick-start development settings - unsuitable for production
@@ -73,7 +74,7 @@ AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
 AWS_QUERYSTRING_EXPIRE = 3600
 AWS_DEFAULT_ACL = "private"
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = ENVIRONMENT == 'development'
 CORS_ALLOW_CREDENTIALS = True
 
 MIDDLEWARE = [
@@ -97,10 +98,12 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
+    "COOKIE_SECURE": ENVIRONMENT == 'production',
+    "COOKIE_DOMAIN": 'api.rideshare-copilot.eu' if ENVIRONMENT == 'production' else None,
 }
 
 ROOT_URLCONF = "ridebackend.urls"
