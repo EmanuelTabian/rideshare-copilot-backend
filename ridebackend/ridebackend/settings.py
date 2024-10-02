@@ -104,7 +104,6 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
 }
 
-SESSION_COOKIE_SAMESITE = 'None'
 
 ROOT_URLCONF = "ridebackend.urls"
 
