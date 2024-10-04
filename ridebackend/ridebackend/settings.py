@@ -76,6 +76,9 @@ AWS_DEFAULT_ACL = "private"
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.rideshare-copilot.eu',
+]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
