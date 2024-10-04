@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-iuwp5zbhxz&gdt^5n##(o=@2-)gl#hv93_+xobj98p=n2=8gvv"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -180,7 +180,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 # Define the directory where the static files will be collected
-STATIC_ROOT = os.path.join(BASE_DIR, 'ridebackend/staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
