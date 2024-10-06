@@ -136,9 +136,15 @@ class UpdateRidePost(APIView):
 
         file = File.objects.filter(post=car_post).first()
         service = FileDirectUploadService()
-
+        MAX_FILE_SIZE = 10 * 1024 * 1024 # 10MB
         if file and "image" in request.FILES:
             image = request.FILES["image"]
+
+            if image.size > MAX_FILE_SIZE:
+                return Response(
+                    {"Message": "The image size is too large. Please upload an image that is less than 10MB."},
+                    status=400
+                )
 
             presigned_put_url = service.start_edit(
                 file=file, file_name=image.name, file_type=image.content_type
@@ -155,6 +161,12 @@ class UpdateRidePost(APIView):
 
         if not file and "image" in request.FILES:
             image = request.FILES["image"]
+
+            if image.size > MAX_FILE_SIZE:
+                return Response(
+                    {"Message": "The image size is too large. Please upload an image that is less than 10MB."},
+                    status=400
+                )
             #  Translating the same front-end JS image upload process, into Python code.
             # 1. Get the presigned data via service.start function
             presigned_post_data = service.start(
