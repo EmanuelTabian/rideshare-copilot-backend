@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .models import User
 from .serializers import UserSerializer
 
 load_dotenv()
@@ -40,10 +41,7 @@ class LoginView(APIView):
         user = authenticate(email=email, password=password)
 
         if user is None:
-            raise AuthenticationFailed("User not found!")
-
-        if not user.check_password(password):
-            raise AuthenticationFailed("Incorrect password")
+            raise AuthenticationFailed("Incorrect email or password!")
 
         payload = {
             "id": user.id,
@@ -52,9 +50,9 @@ class LoginView(APIView):
             "iat": datetime.now(timezone.utc),
         }
         token = jwt.encode(payload, os.getenv("TOKEN_SECRET"), algorithm="HS256")
-        
+
         response = Response()
-        response.set_cookie(key="jwt", value=token,httponly=True)
+        response.set_cookie(key="jwt", value=token, httponly=True)
         response.data = {"jwt": token}
         return response
 

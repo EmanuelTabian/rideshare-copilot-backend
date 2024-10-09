@@ -6,48 +6,48 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ridecars', '0001_initial'),
+        ("ridecars", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='carpost',
-            name='door_number',
+            model_name="carpost",
+            name="door_number",
             field=models.IntegerField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='carpost',
-            name='gear_number',
+            model_name="carpost",
+            name="gear_number",
             field=models.IntegerField(),
         ),
         migrations.AlterField(
-            model_name='carpost',
-            name='milleage',
+            model_name="carpost",
+            name="milleage",
             field=models.IntegerField(),
         ),
         migrations.AlterField(
-            model_name='carpost',
-            name='mpg',
+            model_name="carpost",
+            name="mpg",
             field=models.IntegerField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='carpost',
-            name='phone_number',
+            model_name="carpost",
+            name="phone_number",
             field=models.IntegerField(),
         ),
         migrations.AlterField(
-            model_name='carpost',
-            name='power',
+            model_name="carpost",
+            name="power",
             field=models.IntegerField(),
         ),
         migrations.AlterField(
-            model_name='carpost',
-            name='price',
+            model_name="carpost",
+            name="price",
             field=models.IntegerField(),
         ),
         migrations.AlterField(
-            model_name='carpost',
-            name='seat_number',
+            model_name="carpost",
+            name="seat_number",
             field=models.IntegerField(),
         ),
     ]

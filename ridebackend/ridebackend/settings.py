@@ -31,7 +31,7 @@ SECRET_KEY = "django-insecure-iuwp5zbhxz&gdt^5n##(o=@2-)gl#hv93_+xobj98p=n2=8gvv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "ridecalc",
     "rideposts",
     "ridecars",
-    "health_check",                      
+    "health_check",
     # "health_check.db",
 ]
 
@@ -77,7 +77,7 @@ AWS_DEFAULT_ACL = "private"
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.rideshare-copilot.eu',
+    "https://*.rideshare-copilot.eu",
 ]
 
 MIDDLEWARE = [
@@ -180,7 +180,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 # Define the directory where the static files will be collected
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -190,27 +190,27 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "rideauth.User"
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,  # Keep existing loggers active
-    'formatters': {
-        'verbose': {
-            'format': '[{asctime}] {levelname} {name} {message}',
-            'style': '{',
+    "version": 1,
+    "disable_existing_loggers": False,  # Keep existing loggers active
+    "formatters": {
+        "verbose": {
+            "format": "[{asctime}] {levelname} {name} {message}",
+            "style": "{",
         },
     },
-    'handlers': {
-        'console': {
-            'level': 'ERROR',  # Capture ERROR and CRITICAL level logs
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-            'stream': 'ext://sys.stderr',  # Send logs to stderr
+    "handlers": {
+        "console": {
+            "level": "ERROR",  # Capture ERROR and CRITICAL level logs
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+            "stream": "ext://sys.stderr",  # Send logs to stderr
         },
     },
-    'loggers': {
-        'django.request': {
-            'handlers': ['console'],  # Use the console handler
-            'level': 'ERROR',
-            'propagate': False,
+    "loggers": {
+        "django.request": {
+            "handlers": ["console"],  # Use the console handler
+            "level": "ERROR",
+            "propagate": False,
         },
     },
 }

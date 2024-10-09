@@ -7,5 +7,5 @@ urlpatterns = [
     path("api/", include("ridecalc.urls")),
     path("api/", include("rideposts.urls")),
     path("api/", include("ridecars.urls")),
-    path(r'health/', include('health_check.urls'))
+    path(r"health/", include("health_check.urls")),
 ]
