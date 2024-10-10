@@ -1,12 +1,8 @@
 from django.urls import path
 
-from .views import (
-    AddCalculatorEntry,
-    DeleteCalculatorEntry,
-    GetCalculatorEntries,
-    UpdateCalculatorEntry,
-    GetRecentCalculatorEntries
-)
+from .views import (AddCalculatorEntry, DeleteCalculatorEntry,
+                    GetCalculatorEntries, GetRecentCalculatorEntries,
+                    UpdateCalculatorEntry)
 
 urlpatterns = [
     path("add-calculator-entry", AddCalculatorEntry.as_view()),

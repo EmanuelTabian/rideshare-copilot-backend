@@ -9,19 +9,33 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='File',
+            name="File",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(blank=True, null=True, upload_to=rideposts.models.file_generate_upload_path)),
-                ('original_file_name', models.TextField()),
-                ('file_name', models.CharField(max_length=255, unique=True)),
-                ('file_type', models.CharField(max_length=255)),
-                ('upload_finished_at', models.DateTimeField(blank=True, null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "file",
+                    models.FileField(
+                        blank=True,
+                        null=True,
+                        upload_to=rideposts.models.file_generate_upload_path,
+                    ),
+                ),
+                ("original_file_name", models.TextField()),
+                ("file_name", models.CharField(max_length=255, unique=True)),
+                ("file_type", models.CharField(max_length=255)),
+                ("upload_finished_at", models.DateTimeField(blank=True, null=True)),
             ],
         ),
     ]

@@ -13,7 +13,7 @@ load_dotenv()
 class JWTAuthentication(BaseAuthentication):
     def authenticate(self, request):
         token = request.COOKIES.get("jwt")
-     
+
         if not token:
             raise AuthenticationFailed("Unauthenticated")
 
@@ -23,8 +23,5 @@ class JWTAuthentication(BaseAuthentication):
             raise AuthenticationFailed("Unauthenticated")
 
         user = User.objects.filter(id=payload["id"]).first()
-
-        if user is None:
-            raise AuthenticationFailed("User not found")
 
         return (user, None)

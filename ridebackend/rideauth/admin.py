@@ -1,12 +1,19 @@
-from django.contrib import admin
 from django import forms
+from django.contrib import admin
+
 from .models import User
 
+
 class UserChangeForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput, required=False, help_text="Leave blank for no modification.")
+    password = forms.CharField(
+        widget=forms.PasswordInput,
+        required=False,
+        help_text="Leave blank for no modification.",
+    )
+
     class Meta:
         model = User
-        fields = ('email','name', 'password')
+        fields = ("email", "name", "password")
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -16,11 +23,13 @@ class UserChangeForm(forms.ModelForm):
             user.save()
         return user
 
+
 class UserAdmin(admin.ModelAdmin):
     form = UserChangeForm
     list_display = ("id", "name", "email", "username")
     list_display_links = ("id", "name")
     search_fields = ("name", "email", "username")
     list_per_page = 25
+
 
 admin.site.register(User, UserAdmin)

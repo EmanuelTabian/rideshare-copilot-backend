@@ -1,13 +1,7 @@
 from django.urls import path
 
-from .views import (
-    DeleteUserView,
-    LoginView,
-    LogoutView,
-    RegisterView,
-    UpdateUserView,
-    UserView,
-)
+from .views import (DeleteUserView, LoginView, LogoutView, RegisterView,
+                    UpdateUserView, UserView)
 
 urlpatterns = [
     path("register", RegisterView.as_view()),

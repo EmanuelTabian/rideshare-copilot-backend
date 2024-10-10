@@ -8,12 +8,8 @@ from rest_framework.views import APIView
 from ridecars.models import CarPost
 
 from .models import File
-from .services import (
-    FileDirectUploadService,
-    s3_generate_presigned_delete,
-    s3_generate_presigned_get,
-    s3_generate_presigned_put,
-)
+from .services import (FileDirectUploadService, s3_generate_presigned_delete,
+                       s3_generate_presigned_get, s3_generate_presigned_put)
 
 
 class FileDirectUploadStartApi(APIView):
@@ -68,4 +64,3 @@ class GetImageByCarPostId(APIView):
                 return Response({"message": "The car post no image!"})
         except CarPost.DoesNotExist:
             return Response({"message": "The car post does not exist!"})
-        

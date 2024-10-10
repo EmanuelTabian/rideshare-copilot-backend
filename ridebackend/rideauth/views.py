@@ -5,10 +5,13 @@ import jwt
 from django.contrib.auth import authenticate, password_validation
 from dotenv import load_dotenv
 from rest_framework.exceptions import AuthenticationFailed
+from django.core.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+
+from .models import User
 from .serializers import UserSerializer
 
 load_dotenv()
@@ -21,12 +24,24 @@ class RegisterView(APIView):
 
     def post(self, request):
         serializer = UserSerializer(data=request.data)
-        password_validation.validate_password(
-            request.data["password"], password_validators=None
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+        password = request.data["password"]
+        
+        try:
+            password_validation.validate_password(password, user=None, password_validators=None)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+      
+            return Response(serializer.data)
+        except ValidationError as e:
+            return Response({"error": e}, status=400)
+            
+            
+       
+          
+        
+
+        
+       
 
 
 class LoginView(APIView):
@@ -40,10 +55,7 @@ class LoginView(APIView):
         user = authenticate(email=email, password=password)
 
         if user is None:
-            raise AuthenticationFailed("User not found!")
-
-        if not user.check_password(password):
-            raise AuthenticationFailed("Incorrect password")
+            raise AuthenticationFailed("Incorrect email or password!")
 
         payload = {
             "id": user.id,
@@ -52,9 +64,9 @@ class LoginView(APIView):
             "iat": datetime.now(timezone.utc),
         }
         token = jwt.encode(payload, os.getenv("TOKEN_SECRET"), algorithm="HS256")
-        
+
         response = Response()
-        response.set_cookie(key="jwt", value=token,httponly=True)
+        response.set_cookie(key="jwt", value=token, httponly=True)
         response.data = {"jwt": token}
         return response
 
