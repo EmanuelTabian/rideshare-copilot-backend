@@ -50,9 +50,39 @@ Django-based platform designed to manage user authentication and database intera
 
 ## Tech Stack
 
-- **Backend**: Django, Django REST Framework, Simple JWT, Django Allauth
-- **Database**: PostgreSQL
-- **Authentication**: JWT (JSON Web Token)
+- **Backend**:
+
+  - **Django**: A high-level Python web framework that encourages rapid development and clean, pragmatic design.
+  - **Django REST Framework**: A powerful and flexible toolkit for building Web APIs in Django.
+  - **Simple JWT**: A JSON Web Token authentication plugin for the Django REST Framework.
+
+- **Database**:
+
+  - **PostgreSQL**: A powerful, open-source object-relational database system with a strong reputation for reliability, feature robustness, and performance.
+
+- **Storage**:
+
+  - **AWS S3**: Amazon Simple Storage Service, an object storage service offering industry-leading scalability, data availability, security, and performance.
+
+- **Environment Management**:
+
+  - **Virtualenv**: A tool to create isolated Python environments, allowing dependencies to be installed on a per-project basis without interfering with the system-wide Python installation.
+
+- **Code Formatting**:
+
+  - **Black**: An uncompromising Python code formatter that ensures code readability and consistency.
+  - **isort**: A Python utility for sorting imports, ensuring PEP8 compliance and improving code readability.
+
+- **Linting**:
+
+  - **flake8**: A tool for enforcing coding style (PEP8), checking for programming errors, and ensuring code quality in Python projects.
+
+- **Deployment**:
+  - **Amazon ECS**: A fully managed container orchestration service for deployment, management, and containerized applications scaling.
+  - **RDS**: Amazon Relational Database Service, a managed relational database service that provides scalable and resizable database instances.
+  - **CloudWatch**: A monitoring and observability service that provides data and actionable insights for AWS, hybrid, and on-premises applications and infrastructure resources.
+  - **IAM**: AWS Identity and Access Management, a web service that helps securely control access to AWS services and resources for users.
+  - **Route 53**: A scalable and highly available Domain Name System (DNS) web service designed to route end users to Internet applications by translating domain names into IP addresses.
 
 ## Setup and Installation
 
@@ -61,6 +91,7 @@ Django-based platform designed to manage user authentication and database intera
 - Python 3.x
 - PostgreSQL
 - Virtualenv
+- AWS account (for S3 bucket and IAM roles)
 
 ### Installation Steps
 
