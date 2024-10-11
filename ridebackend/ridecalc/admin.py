@@ -1,6 +1,6 @@
 from .models import CalculatorEntry
 from django import forms
-
+from decimal import Decimal
 from django.contrib import admin
 
 class CalculatorForm(forms.ModelForm):
@@ -18,7 +18,10 @@ class CalculatorAdmin(admin.ModelAdmin):
     list_per_page = 25
 
     def save_model(self, request, obj, form, change):
-        obj.earnings = obj.app_income - (obj.commission / 100) * obj.app_income - obj.expenses
+        commission = obj.commission if obj.commission is not None else Decimal(0)
+        expenses = obj.expenses if obj.expenses is not None else Decimal(0)
+
+        obj.earnings = obj.app_income - (commission / 100) * obj.app_income - expenses
         super().save_model(request, obj, form, change)
 
 admin.site.register(CalculatorEntry, CalculatorAdmin)
