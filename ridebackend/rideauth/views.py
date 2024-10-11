@@ -35,15 +35,6 @@ class RegisterView(APIView):
         except ValidationError as e:
             return Response({"error": e}, status=400)
             
-            
-       
-          
-        
-
-        
-       
-
-
 class LoginView(APIView):
     authentication_classes = []
     permission_classes = []
@@ -86,14 +77,17 @@ class UpdateUserView(APIView):
 
     def put(self, request):
         user = request.user
-        if "password" in request.data:
-            password_validation.validate_password(
-                request.data["password"], password_validators=None
-            )
-        serializer = UserSerializer(user, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+        try:
+            if "password" in request.data:
+                password_validation.validate_password(
+                    request.data["password"],user=None,password_validators=None
+                )
+            serializer = UserSerializer(user, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
+        except ValidationError as e:
+            return Response({'error': e}, status=400)
 
 
 class DeleteUserView(APIView):
