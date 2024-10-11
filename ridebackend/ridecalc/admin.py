@@ -12,9 +12,9 @@ class CalculatorForm(forms.ModelForm):
   
 class CalculatorAdmin(admin.ModelAdmin):
     form = CalculatorForm
-    list_display = ("id","app_income", "commission", "expenses", "earnings", "pub_date")
-    list_display_links = ("id", "app_income")
-    search_fields = ("app_income", "pub_date", "commission")
+    list_display = ('user',"id","app_income", "commission", "expenses", "earnings", "pub_date")
+    list_display_links = ('user',"id")
+    search_fields = ("user","app_income", "pub_date", "commission")
     list_per_page = 25
 
     def save_model(self, request, obj, form, change):
