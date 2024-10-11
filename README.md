@@ -130,17 +130,7 @@ Django-based platform designed to manage user authentication and database intera
 
 5. **Configure environment variables**
 
-   Create a `.env` file in the project root and add the following:
-
-   ```
-   SECRET_KEY=your_secret_key
-   DEBUG=True
-   DB_NAME=rideshare_copilot_db
-   DB_USER=rideshare_user
-   DB_PASSWORD=yourpassword
-   DB_HOST=localhost
-   DB_PORT=5432
-   ```
+   Create a `.env` file in the project root. Access .env.example for environment variables description:
 
 6. **Apply migrations**
 
