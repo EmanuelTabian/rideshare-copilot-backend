@@ -2,11 +2,11 @@
 
 ## Description
 
-This app ensure data flow through the Rideshare Copilot V2 app.
+This app facilitates seamless data flow within the Rideshare Copilot V2 application. It manages user data, file storage, car rental listings, and calculator entries, while providing services to handle database interactions (GET, POST, PUT, DELETE). Additionally, it supports the generation of presigned URLs for secure image uploads to an AWS S3 bucket
 
 ## Overview
 
-Rideshare Copilot Backend is a Django-based application that manages user authentication and interacts with a PostgreSQL database. This project supports various functionalities such as user management, car posts, earnings calculator, document management, and user settings.
+Django-based platform designed to manage user authentication and database interactions via PostgreSQL. The project contains a wide range of functionalities including user, car rental posts, and earnings calculations interaction, along with customizable user settings. The backend architecture ensures smooth, efficient operations for the Rideshare Copilot V2 app, supporting both data storage and real-time interactions with external services like AWS S3 for media management.It also provides admin access, with management capabilities through Django admin site.
 
 ## Table of Contents
 
