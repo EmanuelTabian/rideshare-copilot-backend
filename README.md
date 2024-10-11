@@ -19,11 +19,34 @@ Django-based platform designed to manage user authentication and database intera
 
 ## Features
 
-- User Authentication (Registration, Login, JWT-based authentication)
-- Car Post Management (CRUD operations)
-- Earnings Calculator (Stores data for generating earnings graphs)
-- Document Management (Alerts users for expiration dates)
-- User Settings (Manage User credentials and dark theme toggle)
+- User Authentication:
+
+  - Registration, login, user update and user deletion services.
+  - JWT-based authentication, with tokens valid for 24 hours (token refresh mechanism planned for a future update).
+  - Django built-in password strength check.
+
+- Car Post Management:
+
+  - Full CRUD operations (Create, Read, Update, Delete) for car rental posts, allowing users to add, edit, or remove posts through the frontend app's form.
+  - User Foreign Key set to CASCADE. Car Posts associated with a removed user automatically get deleted.
+  - Car post updates support image uploads, with presigned URLs generated for secure image upload to AWS S3. The app tests two different methods for handling image uploads during car post creation and updates.
+
+- File management:
+
+  - Optional file input for each car post, allowing users to attach pictures.
+  - Files are linked to car posts via a Foreign Key set to CASCADE on car-post deletion, ensuring associated file entry and AWS S3 bucket file removal.
+  - File database entries store uploaded picture metadata.
+  - The API services handle presigned URL generation for safe frontend app/AWS S3 interaction.
+
+- Earnings Calculator:
+
+  - Stores financial data, including app income, comission, expenses, and calculated earnings
+  - Provides user access to rideshare earnings history.
+  - Financial data is used for frontend app dashboard earnings chart generation.
+
+- User Settings:
+  - Allows users to update credentials (username and/or password).
+  - Supports account deletion.
 
 ## Tech Stack
 
