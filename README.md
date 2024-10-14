@@ -115,22 +115,29 @@ Django-based platform designed to manage user authentication and database intera
    pip install -r requirements.txt
    ```
 
-4. **Set up PostgreSQL database**
+4. **Set up a PostgreSQL database**:
 
-   Create a PostgreSQL database and user for the project.
+   - Access PostgreSQL console
 
-   ```sql
-   CREATE DATABASE rideshare_copilot_db;
-   CREATE USER rideshare_user WITH PASSWORD 'yourpassword';
-   ALTER ROLE rideshare_user SET client_encoding TO 'utf8';
-   ALTER ROLE rideshare_user SET default_transaction_isolation TO 'read committed';
-   ALTER ROLE rideshare_user SET timezone TO 'UTC';
-   GRANT ALL PRIVILEGES ON DATABASE rideshare_copilot_db TO rideshare_user;
-   ```
+     ```bash
+         psql -U postgres
+     ```
+
+   - Create a database
+
+     ```sql
+     CREATE DATABASE your_db;
+     CREATE USER rideshare_user WITH PASSWORD 'yourpassword';
+     ALTER ROLE rideshare_user SET client_encoding TO 'utf8';
+     ALTER ROLE rideshare_user SET default_transaction_isolation TO 'read committed';
+     ALTER ROLE rideshare_user SET timezone TO 'UTC';
+     GRANT ALL PRIVILEGES ON DATABASE rideshare_copilot_db TO rideshare_user;
+     ```
 
 5. **Configure environment variables**
 
-   Create a `.env` file in the project root. Access .env.example for environment variables description:
+   - Create a `.env` file in the project root.
+   - Access `.env.example` for environment variables description.
 
 6. **Apply migrations**
 
