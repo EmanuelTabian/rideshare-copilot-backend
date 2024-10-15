@@ -206,30 +206,366 @@ Django-based platform designed to manage user authentication and database intera
 ## API Endpoints
 
 - **Auth**
-
-  - `POST /api/register`: Register user.
-  - `POST /api/login`: Login user.
-  - `POST /api/logout`: Logout user.
-  - `GET /api/user`: Get user data.
-  - `PUT /api/user-update`: Update user data.
-  - `DELETE /api/user-delete`: Delete user account.
-
 - **Calculator**
+- **Car posts**
+- **Files**
 
-  - `POST /api/add-calculator-entry`: Create a new calculator entry.
-  - `GET /api/get-calculator-entries`: Based on a 'page' query parameter it lists 10 calculator entries.
-  - `GET /api/get-recent-calculator-entries`: Based on a 'days' query parameter it retrieves last 7, 30 or 90 days calculator entries.
-  - `PATCH /api/update-calculator-entry/calculator-entry-id`: I takes an in positional argument and updates its data.
-  - `DELETE /api/delete-calculator-entry/calculator-entry-id`: I deletes the calculator entry based on its id.
+## Auth
 
-- **CarPosts**
+### Register User API
 
-  - `POST /api/add-carpost`: Add a car post.
-  - `GET /api/get-carposts/page-number`: Retrieves 10 car posts based on a page number positional argument.
-  - `GET /api/het-carpost/carpost-id`: Retrieve a specific car post.
-  - `GET /api/get-user-carposts/carpost-id`: Retrieve car-posts associated with the current logged in user.
-  - `PUT /api/update-ridepost/carpost-id:` Update a specific car post.
-  - `DELETE /api/delete-ridepost`: Delete a specific car post.
+The Register User API allows new users to create an account by providing their name, email, and password. The registration process includes password validation to ensure security.
+
+#### Endpoint
+
+- **URL**: `/api/register`
+- **Method**: `POST`
+
+#### Request Body
+
+```json
+{
+  "name": "string",
+  "email": "string",
+  "password": "string"
+}
+```
+
+#### Response
+
+- **Success**: Returns the created user data (excluding the password).
+
+  - **Status Code**: `201 Created`
+  - **Response Body**:
+    ```json
+    {
+      "id": "integer",
+      "name": "string",
+      "email": "string"
+    }
+    ```
+
+- **Error**: Returns an error message if the password validation fails or if the provided data is invalid.
+  - **Status Code**: `400 Bad Request`
+  - **Response Body**:
+    ```json
+    {
+      "error": "string"
+    }
+    ```
+
+#### Password Validation
+
+The password must pass the following validators:
+
+- **UserAttributeSimilarityValidator**: Ensures the password is not too similar to the user's other attributes.
+- **MinimumLengthValidator**: Ensures the password has a minimum length.
+- **CommonPasswordValidator**: Prevents the use of common passwords.
+- **NumericPasswordValidator**: Ensures the password is not entirely numeric.
+
+#### Example Request
+
+```bash
+curl -X POST "http://localhost:8000/api/register" \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "password": "SecureP@ssw0rd"
+}'
+```
+
+#### Example Response
+
+```json
+{
+  "id": 1,
+  "name": "John Doe",
+  "email": "john.doe@example.com"
+}
+```
+
+### Login User API
+
+Login view handles user authentication and JWT token generation.
+This view allows users to log in by providing their email and password. Upon successful authentication, a JWT token is generated and set as an HTTP-only cookie in the response.
+
+#### Endpoint
+
+- **URL**: `/api/login`
+- **Method**: `POST`
+
+#### Request Body
+
+```json
+{
+  "email": "string",
+  "password": "string"
+}
+```
+
+#### Response
+
+- **Success**: Returns the JWT token for the authenticated user.
+
+  - **Status Code**: `200 OK`
+  - **Response Body**:
+    ```json
+    {
+      "jwt": "string"
+    }
+    ```
+
+- **Error**: Returns an error message if the authentication fails or if the provided data is invalid.
+
+  - **Status Code**: `403 Forbidden`
+  - Raises **AuthenticationFailed**
+
+#### Example Request
+
+```bash
+curl -X POST "http://localhost:8000/api/login" \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "john.doe@example.com",
+  "password": "SecureP@ssw0rd"
+}'
+```
+
+#### Example Response
+
+```json
+{
+  "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+### Get User API
+
+The Get User API allows authenticated users to retrieve their own user data. This endpoint ensures that only authenticated users can access their personal information.
+
+#### Endpoint
+
+- **URL**: `/api/user`
+- **Method**: `GET`
+
+#### Request
+
+- **Headers**:
+  - `Authorization`: `Bearer <JWT token>`
+
+#### Response
+
+- **Success**: Returns the authenticated user's data.
+
+  - **Status Code**: `200 OK`
+  - **Response Body**:
+    ```json
+    {
+      "id": "integer",
+      "name": "string",
+      "email": "string"
+    }
+    ```
+
+- **Error**: Returns an error message if the user is not authenticated.
+
+  - **Status Code**: `403 Forbidden`
+  - **Response Body**:
+    ```json
+    {
+      "detail": "Unauthenticated"
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X GET "http://localhost:8000/api/user" \
+-H "Authorization: Bearer <JWT token>"
+```
+
+#### Example Response
+
+```json
+{
+  "id": 1,
+  "name": "John Doe",
+  "email": "john.doe@example.com"
+}
+```
+
+### Update User API
+
+The Update User API allows authenticated users to update their account information, including their password. This endpoint ensures that only authenticated users can update their personal information.
+
+#### Endpoint
+
+- **URL**: `/api/update-user`
+- **Method**: `PUT`
+
+#### Request
+
+- **Headers**:
+
+  - `Authorization`: `Bearer <JWT token>`
+
+- **Body**:
+  ```json
+  {
+    "name": "string",
+    "password": "string"
+  }
+  ```
+
+#### Response
+
+- **Success**: Returns the updated user data.
+
+  - **Status Code**: `200 OK`
+  - **Response Body**:
+    ```json
+    {
+      "id": "integer",
+      "name": "string",
+      "email": "string"
+    }
+    ```
+
+- **Error**: Returns an error message if the update fails or if the provided data is invalid.
+
+  - **Status Code**: `400 Bad Request`
+  - **Response Body**:
+    ```json
+    {
+      "error": "string"
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X PUT "http://localhost:8000/api/update-user" \
+-H "Authorization: Bearer <JWT token>" \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "Jane Doe",
+  "password": "NewSecureP@ssw0rd"
+}'
+```
+
+#### Example Response
+
+```json
+{
+  "id": 1,
+  "name": "Jane Doe",
+  "email": "jane.doe@example.com"
+}
+```
+
+### Logout User API
+
+The Logout User API allows authenticated users to log out by deleting the JWT token stored in the HTTP-only cookie. This endpoint ensures that the user's session is terminated securely.
+
+#### Endpoint
+
+- **URL**: `/api/logout`
+- **Method**: `POST`
+
+#### Request
+
+- **Headers**:
+  - `Authorization`: `Bearer <JWT token>`
+
+#### Response
+
+- **Success**: Confirms that the user has been logged out successfully.
+
+  - **Status Code**: `200 OK`
+  - **Response Body**:
+    ```json
+    {
+      "message": "success"
+    }
+    ```
+
+- **Error**: Returns an error message if the logout process fails.
+
+  - **Status Code**: `400 Bad Request`
+  - **Response Body**:
+    ```json
+    {
+      "error": "string"
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X POST "http://localhost:8000/api/logout" \
+-H "Authorization: Bearer <JWT token>"
+```
+
+#### Example Response
+
+```json
+{
+  "message": "success"
+}
+```
+
+### Delete User API
+
+The Delete User API allows authenticated users to delete their own account. This endpoint ensures that only authenticated users can delete their personal information.
+
+#### Endpoint
+
+- **URL**: `/api/delete-user`
+- **Method**: `DELETE`
+
+#### Request
+
+- **Headers**:
+  - `Authorization`: `Bearer <JWT token>`
+
+#### Response
+
+- **Success**: Confirms that the user has been deleted successfully.
+
+  - **Status Code**: `204 No Content`
+
+- **Error**: Returns an error message if the deletion process fails.
+
+  - **Status Code**: `400 Bad Request`
+  - **Response Body**:
+    ```json
+    {
+      "error": "string"
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X DELETE "http://localhost:8000/api/delete-user" \
+-H "Authorization: Bearer <JWT token>"
+```
+
+#### Example Response
+
+```json
+{
+  "message": "User deleted successfully"
+}
+```
+
+- `POST /api/add-carpost`: Add a car post.
+- `GET /api/get-carposts/page-number`: Retrieves 10 car posts based on a page number positional argument.
+- `GET /api/het-carpost/carpost-id`: Retrieve a specific car post.
+- `GET /api/get-user-carposts/carpost-id`: Retrieve car-posts associated with the current logged in user.
+- `PUT /api/update-ridepost/carpost-id:` Update a specific car post.
+- `DELETE /api/delete-ridepost`: Delete a specific car post.
 
 - **Files**
   - `POST /api/upload/direct/start`: Starts the presigned url generation and stores image data.
