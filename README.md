@@ -196,12 +196,6 @@ Django-based platform designed to manage user authentication and database intera
    python manage.py createsuperuser
    ```
 
-9. **Start the development server**
-
-   ```bash
-   python manage.py runserver
-   ```
-
 ## Database Models
 
 - **User**: Stores user information and authentication details.
@@ -250,22 +244,56 @@ To run the project locally, follow the setup and installation steps mentioned ab
 python manage.py runserver
 ```
 
-## Dev Tips
+## Frontend Integration
 
-1. Run isort [filename.py] to sort the imports, or isort . to apply it for the entire project. Run isort --atomic [filename.py] or . to make sure the modifications don't introduce syntax errors.
-   Note: if you install isort VS Code Extention, use Shift + Alt + 0 to format imports or add:
+This backend project is designed to work seamlessly with the Rideshare Copilot V2 frontend application. For more details and to access the frontend repository, visit [Rideshare Copilot V2 Frontend Repository](https://github.com/yourusername/rideshare-copilot-frontend).
 
-"[python]": {
-"editor.defaultFormatter": "ms-python.black-formatter",
-"editor.formatOnSave": true,
-"editor.codeActionsOnSave": {
-"source.organizeImports": true
-},
-},
-"isort.args":["--profile", "black"],
+### Dev Tips
 
-This will automatically sort imports on save.
+- **Sort Imports with isort**:
 
-2. Run black . (inside of the root project folder) or mention a specific file to format code (simmilar to prettier for JS)
+  - To sort imports in a specific file:
+    ```bash
+    isort filename.py
+    ```
+  - To sort imports for the entire project:
+    ```bash
+    isort .
+    ```
+  - To ensure modifications don't introduce syntax errors:
+    ```bash
+    isort --atomic filename.py
+    ```
+  - For VS Code users, install the isort extension and add the following to your settings to automatically sort imports on save:
+    ```json
+    "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+    },
+    "isort.args": ["--profile", "black"]
+    ```
+    Use `Shift + Alt + O` to manually sort imports.
 
-3. Use flake8 [filename] or flake8 . (applied for current directory) to check for code errors
+- **Format Code with Black**:
+  - To format the entire project:
+    ```bash
+    black .
+    ```
+  - To format a specific file:
+    ```bash
+    black filename.py
+    ```
+
+3. **Check Code with flake8**:
+
+- To check a specific file for code errors:
+  ```bash
+  flake8 filename.py
+  ```
+- To check the current directory:
+  ```bash
+  flake8 .
+  ```
