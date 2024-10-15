@@ -30,6 +30,7 @@ Django-based platform designed to manage user authentication and database intera
   - Full CRUD operations (Create, Read, Update, Delete) for car rental posts, allowing users to add, edit, or remove posts through the frontend app's form.
   - User Foreign Key set to CASCADE. Car Posts associated with a removed user automatically get deleted.
   - Car post updates support image uploads, with presigned URLs generated for secure image upload to AWS S3. The app tests two different methods for handling image uploads during car post creation and updates.
+  - For more information about the direct upload process implementation and how it works, refer to this [HackSoft article](https://www.hacksoft.io/blog/direct-to-s3-file-upload-with-django).
 
 - File management:
 
@@ -211,29 +212,35 @@ Django-based platform designed to manage user authentication and database intera
 ## API Endpoints
 
 - **Auth**
-  - `POST /api/auth/login/`: Login user
-  - `POST /api/auth/register/`: Register user
-  - `POST /api/auth/token/`: Obtain JWT token
-  - `POST /api/auth/token/refresh/`: Refresh JWT token
-- **User**
-  - `GET /api/user/`: Retrieve user information
-  - `PUT /api/user/`: Update user information
-- **CarPosts**
-  - `GET /api/carposts/`: List all car posts
-  - `POST /api/carposts/`: Create a new car post
-  - `GET /api/carposts/:id/`: Retrieve a specific car post
-  - `PUT /api/carposts/:id/`: Update a specific car post
-  - `DELETE /api/carposts/:id/`: Delete a specific car post
+
+  - `POST /api/register`: Register user.
+  - `POST /api/login`: Login user.
+  - `POST /api/logout`: Logout user.
+  - `GET /api/user`: Get user data.
+  - `PUT /api/user-update`: Update user data.
+  - `DELETE /api/user-delete`: Delete user account.
+
 - **Calculator**
-  - `GET /api/calculator/`: List all calculator entries
-  - `POST /api/calculator/`: Create a new calculator entry
-  - `DELETE /api/calculator/`: Delete a calculator entry
-- **Documents**
-  - `GET /api/documents/`: List all documents
-  - `POST /api/documents/`: Add a new document
-- **Settings**
-  - `GET /api/settings/`: Retrieve user settings
-  - `PUT /api/settings/`: Update user settings
+
+  - `POST /api/add-calculator-entry`: Create a new calculator entry.
+  - `GET /api/get-calculator-entries`: Based on a 'page' query parameter it lists 10 calculator entries.
+  - `GET /api/get-recent-calculator-entries`: Based on a 'days' query parameter it retrieves last 7, 30 or 90 days calculator entries.
+  - `PATCH /api/update-calculator-entry/calculator-entry-id`: I takes an in positional argument and updates its data.
+  - `DELETE /api/delete-calculator-entry/calculator-entry-id`: I deletes the calculator entry based on its id.
+
+- **CarPosts**
+
+  - `POST /api/add-carpost`: Add a car post.
+  - `GET /api/get-carposts/page-number`: Retrieves 10 car posts based on a page number positional argument.
+  - `GET /api/het-carpost/carpost-id`: Retrieve a specific car post.
+  - `GET /api/get-user-carposts/carpost-id`: Retrieve car-posts associated with the current logged in user.
+  - `PUT /api/update-ridepost/carpost-id:` Update a specific car post.
+  - `DELETE /api/delete-ridepost`: Delete a specific car post.
+
+- **Files**
+  - `POST /api/upload/direct/start`: Starts the presigned url generation and stores image data.
+  - `POST /api/upload/direct/finish`: Marks the upload process as finished and sets the file upload date.
+  - `GET /api/get-image-by-post-id/car-post-id`: Gets the image based on the car post id.
 
 ## Running the Project
 
