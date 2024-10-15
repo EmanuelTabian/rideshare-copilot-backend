@@ -115,7 +115,12 @@ Django-based platform designed to manage user authentication and database intera
    pip install -r requirements.txt
    ```
 
-4. **Set up a PostgreSQL database**:
+4. **Configure environment variables**
+
+   - Create a `.env` file in the project root.
+   - Access `.env.example` for environment variables description.
+
+5. **Set up a PostgreSQL database**:
 
    - Access PostgreSQL console
 
@@ -134,25 +139,63 @@ Django-based platform designed to manage user authentication and database intera
      GRANT ALL PRIVILEGES ON DATABASE rideshare_copilot_db TO rideshare_user;
      ```
 
-5. **Configure environment variables**
+6. **Set up an AWS S3 Storage Bucket with Cloudfront Distribution**.
+   For a step-by-step guide on setting up an AWS S3 Storage Bucket with CloudFront Distribution, refer to this [YouTube tutorial](https://www.youtube.com/watch?v=RsiXzwesNLQ&t=1192s).
 
-   - Create a `.env` file in the project root.
-   - Access `.env.example` for environment variables description.
+- **Create an S3 Bucket**
 
-6. **Apply migrations**
+  - Log in to the AWS Management Console.
+  - Navigate to the S3 service.
+  - Click on "Create bucket".
+  - Enter a unique bucket name and select a region.
+  - Configure options as needed and click "Create bucket".
+
+- **Set Bucket Permissions**
+
+  - Select the newly created bucket.
+  - Go to the "Permissions" tab.
+  - Set the appropriate bucket policy to allow access to your application.
+
+- **Create a CloudFront Distribution**
+
+  - Navigate to the CloudFront service in the AWS Management Console.
+  - Click on "Create Distribution".
+  - Select "Web" as the delivery method.
+  - Under "Origin Settings", set the "Origin Domain Name" to your S3 bucket.
+  - Configure other settings as needed and click "Create Distribution".
+
+- **Configure CloudFront Distribution**
+
+  - Once the distribution is created, select it from the list.
+  - Go to the "Behaviors" tab and click "Create Behavior".
+  - Set the "Path Pattern" to `/*` to match all requests.
+  - Configure other settings as needed and click "Create".
+
+- **Update CORS Configuration**
+
+  - Go back to your S3 bucket.
+  - Navigate to the "Permissions" tab and click on "CORS configuration".
+  - Add the necessary CORS rules to allow your application to interact with the bucket.
+
+- **Update Environment Variables**
+
+  - Add the CloudFront distribution URL and S3 bucket name to your `.env` file.
+  - Ensure your application uses these variables for media storage and retrieval.
+
+7. **Apply migrations**
 
    ```bash
    python manage.py makemigrations
    python manage.py migrate
    ```
 
-7. **Create a superuser**
+8. **Create a superuser**
 
    ```bash
    python manage.py createsuperuser
    ```
 
-8. **Start the development server**
+9. **Start the development server**
 
    ```bash
    python manage.py runserver
@@ -162,9 +205,8 @@ Django-based platform designed to manage user authentication and database intera
 
 - **User**: Stores user information and authentication details.
 - **CarPost**: Stores information about car posts.
+- **File**: Stores information about the uploaded files.
 - **CalculatorEntry**: Stores data entries for the earnings calculator.
-- **Document**: Stores document details and expiration dates.
-- **Setting**: Stores user settings and preferences.
 
 ## API Endpoints
 
