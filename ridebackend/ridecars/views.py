@@ -234,4 +234,4 @@ class DeleteRidePost(APIView):
 
         car_post.delete()
 
-        return Response()
+        return Response({'message': 'Car post deleted successfully!'})
