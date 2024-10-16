@@ -560,6 +560,370 @@ curl -X DELETE "http://localhost:8000/api/delete-user" \
 }
 ```
 
+## Calculator
+
+### Add Calculator Entry API
+
+The Add Calculator Entry API allows authenticated users to add a new calculator entry to their account.
+
+#### Endpoint
+
+- **URL**: `/api/add-calculator-entry`
+- **Method**: `POST`
+
+#### Request Body
+
+```json
+{
+  "app_income": "number",
+  "commission": "number",
+  "expenses": "number",
+  "earnings": "number"
+}
+```
+
+#### Response
+
+- **Success**: Returns the created calculator entry data.
+
+  - **Status Code**: 200 OK
+  - **Response Body**:
+    ```json
+    {
+      "id": "integer",
+      "app_income": "string",
+      "comission": "string",
+      "expenses": "string",
+      "earnings": "string",
+      "date": "date"
+    }
+    ```
+
+- **Error**: Returns an error message if the provided data is invalid.
+
+  - **Status Code**: `400 Bad Request`
+  - **Response Body**:
+    ```json
+    {
+      "error": "string"
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X POST "http://localhost:8000/api/add-calculator-entry" \
+-H "Authorization: Bearer <JWT token>" \
+-H "Content-Type: application/json" \
+-d '{
+  "app_income": "1000",
+  "earnings": "1000",
+}'
+```
+
+#### Example Response
+
+```json
+{
+  "id": 1,
+  "app_income": "1000",
+  "comission": null,
+  "expenses": null,
+  "earnings": 1000,
+  "date": "2024-10-16T15:56:47.167956+03:00"
+}
+```
+
+### Get Calculator Entries API
+
+The Get Calculator Entries API allows authenticated users to retrieve their calculator entries, with pagination support to manage large datasets. This ensures that the frontend can sort the data without having to handle large data sets directly.
+
+#### Endpoint
+
+- **URL**: `/api/get-calculator-entries`
+- **Method**: `GET`
+
+#### Request
+
+- **Headers**:
+
+  - `Authorization`: `Bearer <JWT token>`
+
+- **Query Parameters**:
+  - `page`: The page number to retrieve (default is 1).
+
+#### Response
+
+- **Success**: Returns a paginated list of calculator entries for the authenticated user.
+
+  - **Status Code**: `200 OK`
+  - **Response Body**:
+    ```json
+    {
+      "data": [
+        {
+          "id": "integer",
+          "app_income": "number",
+          "commission": "number",
+          "expenses": "number",
+          "earnings": "number",
+          "date": "date"
+        }
+      ],
+      "count": "integer",
+      "pagination": {
+        "current_page": "integer",
+        "total_pages": "integer",
+        "has_previous": "boolean",
+        "has_next": "boolean",
+        "previous_page_number": "integer or null",
+        "next_page_number": "integer or null"
+      }
+    }
+    ```
+
+- **Error**: Returns an error message if the page number is invalid or out of range.
+
+  - **Status Code**: `400 Bad Request`
+  - **Response Body**:
+    ```json
+    {
+      "error": "string"
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X GET "http://localhost:8000/api/get-calculator-entries?page=1" \
+-H "Authorization: Bearer <JWT token>"
+```
+
+#### Example Response
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "app_income": "1000",
+      "commission": "100",
+      "expenses": "50",
+      "earnings": "850",
+      "date": "2024-10-16T15:56:47.167956+03:00"
+    }
+  ],
+  "count": 1,
+  "pagination": {
+    "current_page": 1,
+    "total_pages": 1,
+    "has_previous": false,
+    "has_next": false,
+    "previous_page_number": null,
+    "next_page_number": null
+  }
+}
+```
+
+### Get Recent Calculator Entries API
+
+The Get Recent Calculator Entries API allows authenticated users to retrieve their calculator entries from the past 7, 30, or 90 days.
+
+- Recent calculator entries serve as the data source for generating charts on the frontend dashboard, providing users with visual insights into their earnings over the selected period.
+- These entries are ordered by publication date, ensuring that the frontend does not need to handle sorting for chart generation.
+
+#### Endpoint
+
+- **URL**: `/api/get-recent-calculator-entries`
+- **Method**: `GET`
+
+#### Request
+
+- **Headers**:
+
+  - `Authorization`: `Bearer <JWT token>`
+
+- **Query Parameters**:
+  - `days`: The number of days to look back (must be 7, 30, or 90). Default is 7.
+
+#### Response
+
+- **Success**: Returns a list of recent calculator entries for the authenticated user.
+
+  - **Status Code**: `200 OK`
+  - **Response Body**:
+    ```json
+    {
+      "data": [
+        {
+          "id": "integer",
+          "app_income": "string",
+          "commission": "string",
+          "expenses": "string",
+          "earnings": "string",
+          "date": "date"
+        }
+      ]
+    }
+    ```
+
+- **Error**: Returns an error message if the `days` parameter is invalid.
+
+  - **Status Code**: `400 Bad Request`
+  - **Response Body**:
+    ```json
+    {
+      "detail": "Invalid number of days. Must be 7, 30, or 90."
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X GET "http://localhost:8000/api/get-recent-calculator-entries?days=30" \
+-H "Authorization: Bearer <JWT token>"
+```
+
+#### Example Response
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "app_income": "1000",
+      "commission": "100",
+      "expenses": "50",
+      "earnings": "850",
+      "date": "2024-10-16T15:56:47.167956+03:00"
+    }
+  ]
+}
+```
+
+### Update Calculator Entry API
+
+The Update Calculator Entry API allows authenticated users to update an existing calculator entry. This endpoint ensures that only the owner of the entry can make updates.
+
+#### Endpoint
+
+- **URL**: `/api/update-calculator-entry/<calcentry_id>`
+- **Method**: `PATCH`
+
+#### Request
+
+- **Headers**:
+
+  - `Authorization`: `Bearer <JWT token>`
+
+- **Body**:
+  ```json
+  {
+    "app_income": "string",
+    "commission": "string",
+    "expenses": "string",
+    "earnings": "string"
+  }
+  ```
+
+#### Response
+
+- **Success**: Returns the updated calculator entry data.
+
+  - **Status Code**: `200 OK`
+  - **Response Body**:
+    ```json
+    {
+      "id": "integer",
+      "app_income": "string",
+      "commission": "string",
+      "expenses": "string",
+      "earnings": "string",
+      "date": "date"
+    }
+    ```
+
+- **Error**: Returns an error message if the update fails or if the user does not have permission to update the entry.
+
+  - **Status Code**: `403 Forbidden`
+  - **Response Body**:
+    ```json
+    {
+      "detail": "You do not have permission to edit this entry."
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X PATCH "http://localhost:8000/api/update-calculator-entry/1" \
+-H "Authorization: Bearer <JWT token>" \
+-H "Content-Type: application/json" \
+-d '{
+  "app_income": "1200",
+  "commission": "150",
+  "expenses": "60",
+  "earnings": "990"
+}'
+```
+
+#### Example Response
+
+```json
+{
+  "id": 1,
+  "app_income": "1200",
+  "commission": "150",
+  "expenses": "60",
+  "earnings": "990",
+  "date": "2024-10-16T15:56:47.167956+03:00"
+}
+```
+
+### Delete Calculator Entry API
+
+The Delete Calculator Entry API allows authenticated users to delete an existing calculator entry. This endpoint ensures that only the owner of the entry can delete it.
+
+#### Endpoint
+
+- **URL**: `/api/delete-calculator-entry/<calcentry_id>`
+- **Method**: `DELETE`
+
+#### Request
+
+- **Headers**:
+  - `Authorization`: `Bearer <JWT token>`
+
+#### Response
+
+- **Success**: Confirms that the calculator entry has been deleted successfully.
+
+  - **Status Code**: `204 No Content`
+
+- **Error**: Returns an error message if the user does not have permission to delete the entry or if the entry does not exist.
+  - **Status Code**: `403 Forbidden`
+  - **Response Body**:
+    ```json
+    {
+      "detail": "You do not have permission to delete this entry."
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X DELETE "http://localhost:8000/api/delete-calculator-entry/1" \
+-H "Authorization: Bearer <JWT token>"
+```
+
+#### Example Response
+
+```json
+{
+  "message": "Calculator entry deleted successfully"
+}
+```
+
 - `POST /api/add-carpost`: Add a car post.
 - `GET /api/get-carposts/page-number`: Retrieves 10 car posts based on a page number positional argument.
 - `GET /api/het-carpost/carpost-id`: Retrieve a specific car post.
