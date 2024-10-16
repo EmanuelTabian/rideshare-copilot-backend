@@ -924,6 +924,411 @@ curl -X DELETE "http://localhost:8000/api/delete-calculator-entry/1" \
 }
 ```
 
+## Car posts
+
+### Add Car Post API
+
+The Add Car Post API allows authenticated users to add a new car post to their account.
+
+#### Endpoint
+
+- **URL**: `/api/add-carpost`
+- **Method**: `POST`
+
+#### Request Body
+
+```json
+{
+  "car_name": "string",
+  "model": "string",
+  "version": "string",
+  "year": "string",
+    ...
+
+}
+```
+
+#### Response
+
+- **Success**: Returns the created car post data.
+
+  - **Status Code**: `201`
+  - **Response Body**:
+    ```json
+    {
+      "id": "integer",
+      "car_name": "string",
+      "model": "string",
+      "version": "string",
+      "year": "string",
+      ...
+    }
+    ```
+
+- **Error**: Returns an error message if the provided data is invalid.
+
+  - **Status Code**: `400 Bad Request`
+  - **Response Body**:
+    ```json
+    {
+      "error": "string"
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X POST "http://localhost:8000/api/add-carpost" \
+-H "Authorization: Bearer <JWT token>" \
+-H "Content-Type: application/json" \
+-d '{
+  "car_name": "Volvo",
+  "model": "XC90",
+  "version": null,
+  "year": "2010"
+}'
+```
+
+#### Example Response
+
+```json
+{
+  "id": 1,
+  "user": 2,
+  "created_at": "2024-10-16T15:56:47.167956+03:00",
+  "car_name": "Volvo",
+  "model": "XC90",
+  "version": null,
+  "year": "2010",
+  "engine": null,
+  "fuel": null,
+  "body": null,
+  "transmission": null,
+  "gear_number": null,
+  "color": null,
+  "seat_number": null,
+  "door_number": null,
+  "milleage": null,
+  "power": null,
+  "mpg": null,
+  "description": null,
+  "emission_standard": null,
+  "location": null,
+  "contact": null,
+  "price": null
+}
+```
+
+### Get All Car Posts API
+
+The Get All Car Posts API allows authenticated users to retrieve a paginated list of all car posts. This endpoint ensures that users can browse through car posts efficiently.
+
+#### Endpoint
+
+- **URL**: `/api/get-carposts/<path:page>`
+- **Method**: `GET`
+
+#### Request
+
+- **Headers**:
+  - `Authorization`: `Bearer <JWT token>`
+
+#### Response
+
+- **Success**: Returns a paginated list of car posts.
+
+  - **Status Code**: `200 OK`
+  - **Response Body**:
+    ```json
+    {
+      "data": [
+        {
+          "id": "integer",
+          "car_name": "string",
+          "model": "string",
+          "version": "string",
+          "year": "string",
+          ...
+        }
+      ],
+      "count": "integer",
+      "pagination": {
+        "current_page": "integer",
+        "total_pages": "integer",
+        "has_previous": "boolean",
+        "has_next": "boolean",
+        "previous_page_number": "integer or null",
+        "next_page_number": "integer or null"
+      }
+    }
+    ```
+
+- **Error**: Returns an error message if the page number is invalid or out of range.
+
+  - **Status Code**: `400 Bad Request`
+  - **Response Body**:
+    ```json
+    {
+      "error": "string"
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X GET "http://localhost:8000/api/get-carposts/1" \
+-H "Authorization: Bearer <JWT token>"
+```
+
+#### Example Response
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "car_name": "Volvo",
+      "model": "XC90",
+      "version": null,
+      "year": "2010",
+      ...
+    }
+  ],
+  "count": 1,
+  "pagination": {
+    "current_page": 1,
+    "total_pages": 1,
+    "has_previous": false,
+    "has_next": false,
+    "previous_page_number": null,
+    "next_page_number": null
+  }
+}
+```
+
+### Get User Car Posts API
+
+The Get User Car Posts API allows authenticated users to retrieve their own car posts. This endpoint functions similarly to the Get All Car Posts API but filters the results to only include car posts associated with the current user.
+
+#### Endpoint
+
+- **URL**: `/api/get-user-carposts`
+- **Method**: `GET`
+
+### Get Single Car Post API
+
+The Get Single Car Post API allows authenticated users to retrieve a specific car post by its ID. This endpoint ensures that users can view detailed information about a particular car post.
+
+#### Endpoint
+
+- **URL**: `/api/get-carpost/<car_post_id>`
+- **Method**: `GET`
+
+#### Request
+
+- **Headers**:
+  - `Authorization`: `Bearer <JWT token>`
+
+#### Response
+
+- **Success**: Returns the car post data for the specified ID.
+
+  - **Status Code**: `200 OK`
+  - **Response Body**:
+    ```json
+    {
+      "id": "integer",
+      "car_name": "string",
+      "model": "string",
+      "version": "string",
+      "year": "string",
+      ...
+    }
+    ```
+
+- **Error**: Returns an error message if the car post does not exist or if the user is not authenticated.
+
+  - **Status Code**: `404 Not Found`
+  - **Response Body**:
+    ```json
+    {
+      "detail": "Not found."
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X GET "http://localhost:8000/api/get-carpost/1" \
+-H "Authorization: Bearer <JWT token>"
+```
+
+#### Example Response
+
+```json
+{
+  "id": 1,
+  "car_name": "Volvo",
+  "model": "XC90",
+  "version": null,
+  "year": "2010",
+  ...
+}
+```
+
+### Update Car Post API
+
+The Update Car Post API allows authenticated users to update an existing car post. This endpoint ensures that only the owner of the car post can make updates.
+
+#### Endpoint
+
+- **URL**: `/api/update-carpost/<car_post_id>`
+- **Method**: `PUT`
+
+#### Image Upload Process for Car Post
+
+Handles the image upload process for a car post.
+
+This function performs the following steps:
+
+- Checks if a file associated with the car post already exists.
+- If a file exists and an image is provided in the request:
+  - Validates the image size.
+  - Generates a presigned URL for updating the image from the AWS S3 Bucket.
+  - Puts the image to S3 using the presigned URL.
+  - Returns an error response if the upload fails.
+- If no file exists and an image is provided in the request:
+  - Validates the image size.
+  - Generates presigned data for uploading the image to S3.
+  - Extracts the presigned URL and fields from the presigned data.
+  - Uploads the image to S3 using the presigned URL and fields.
+  - Returns an error response if the upload fails.
+  - Marks the upload process as finished by updating the file record.
+
+#### Parameters:
+
+- **request**: The HTTP request object containing the image file.
+- **car_post_id**: The car post object associated with the file.
+
+#### Returns:
+
+- **Response**: An HTTP response indicating the success or failure of the image upload process.
+
+#### Request
+
+- **Headers**:
+
+  - `Authorization`: `Bearer <JWT token>`
+
+- **Body**:
+  ```json
+  {
+    "car_name": "string",
+    "model": "string",
+    "version": "string",
+    "year": "string",
+    ...
+  }
+  ```
+
+#### Response
+
+- **Success**: Returns the updated car post data.
+
+  - **Status Code**: `200 OK`
+  - **Response Body**:
+    ```json
+    {
+      "id": "integer",
+      "car_name": "string",
+      "model": "string",
+      "version": "string",
+      "year": "string",
+      ...
+    }
+    ```
+
+- **Error**: Returns an error message if the update fails or if the user does not have permission to update the car post.
+
+  - **Status Code**: `403 Forbidden`
+  - **Response Body**:
+    ```json
+    {
+      "detail": "You do not have permission to edit this car post."
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X PUT "http://localhost:8000/api/update-carpost/1" \
+-H "Authorization: Bearer <JWT token>" \
+-H "Content-Type: application/json" \
+-d '{
+  "car_name": "Volvo",
+  "model": "XC90",
+  "version": "T6",
+  "year": "2015"
+}'
+```
+
+#### Example Response
+
+```json
+{
+  "id": 1,
+  "car_name": "Volvo",
+  "model": "XC90",
+  "version": "T6",
+  "year": "2015",
+  ...
+}
+```
+
+### Delete Car Post API
+
+The Delete Car Post API allows authenticated users to delete an existing car post. This endpoint ensures that only the owner of the car post can delete it.
+
+#### Endpoint
+
+- **URL**: `/api/delete-carpost/<car_post_id>`
+- **Method**: `DELETE`
+
+#### Request
+
+- **Headers**:
+  - `Authorization`: `Bearer <JWT token>`
+
+#### Response
+
+- **Success**: Confirms that the car post has been deleted successfully.
+
+  - **Status Code**: `204 No Content`
+
+- **Error**: Returns an error message if the user does not have permission to delete the car post or if the car post does not exist.
+  - **Status Code**: `403 Forbidden`
+  - **Response Body**:
+    ```json
+    {
+      "detail": "You do not have permission to delete this car post."
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X DELETE "http://localhost:8000/api/delete-carpost/1" \
+-H "Authorization: Bearer <JWT token>"
+```
+
+#### Example Response
+
+```json
+{
+  "message": "Car post deleted successfully"
+}
+```
+
 - `POST /api/add-carpost`: Add a car post.
 - `GET /api/get-carposts/page-number`: Retrieves 10 car posts based on a page number positional argument.
 - `GET /api/het-carpost/carpost-id`: Retrieve a specific car post.
