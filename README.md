@@ -205,10 +205,10 @@ Django-based platform designed to manage user authentication and database intera
 
 ## API Endpoints
 
-- **Auth**
-- **Calculator**
-- **Car posts**
-- **Files**
+- [Auth](#auth)
+- [Calculator](#calculator)
+- [Car posts](#car-posts)
+- [Files](#files)
 
 ## Auth
 
@@ -929,6 +929,7 @@ curl -X DELETE "http://localhost:8000/api/delete-calculator-entry/1" \
 ### Add Car Post API
 
 The Add Car Post API allows authenticated users to add a new car post to their account.
+For more information on how the image upload and linkage to post is handled, refer to the [Files](#files) section.
 
 #### Endpoint
 
