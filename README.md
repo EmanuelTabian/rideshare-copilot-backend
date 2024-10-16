@@ -929,7 +929,9 @@ curl -X DELETE "http://localhost:8000/api/delete-calculator-entry/1" \
 ### Add Car Post API
 
 The Add Car Post API allows authenticated users to add a new car post to their account.
-For more information on how the image upload and linkage to post is handled, refer to the [Files](#files) section.
+
+- The image upload process follows a direct upload technique on new car posts.For more information on how the image upload and linkage to post is handled, refer to the [Files](#files) section.
+- For more information about the direct upload process implementation and how it works, refer to this [HackSoft article](https://www.hacksoft.io/blog/direct-to-s3-file-upload-with-django).
 
 #### Endpoint
 
@@ -1188,9 +1190,11 @@ The Update Car Post API allows authenticated users to update an existing car pos
 
 #### Image Upload Process for Car Post
 
-Handles the image upload process for a car post.
+The upload process uses the rideposts app services and performs the upload. This is done in contrast to the direct upload process for new posts and is kept as a reference for two different techniques.
 
-This function performs the following steps:
+- For more information about the direct upload process implementation and how it works, refer to the [Files](#files) section.
+
+#### This function performs the following steps:
 
 - Checks if a file associated with the car post already exists.
 - If a file exists and an image is provided in the request:
@@ -1532,6 +1536,52 @@ curl -X GET "http://localhost:8000/api/get-image-by-post-id/1" \
   "url": "https://example-bucket.s3.amazonaws.com/example-bucket--euw2-az2--x-s3/user-1/photos/example-photo.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=DUMMYCREDENTIAL%2F20241016%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20241016T161307Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=dummysignature1234567890abcdef"
 }
 ```
+
+#### Services
+
+The following services handle the generation of presigned URLs for various S3 operations, ensuring secure and efficient file management.
+
+#### Presigned URL generation/interaction
+
+- `s3_generate_presigned_post`
+
+  - Generates a presigned URL for uploading a file directly to S3. This URL allows users to upload files with specified conditions and expiration time.
+
+- `s3_generate_presigned_get`
+
+  - Generates a presigned URL for retrieving a file from S3. This URL allows users to download files securely with an expiration time of 3600 seconds.
+
+- `s3_generate_presigned_put`
+
+  - Generates a presigned URL for updating a file in S3. This URL allows users to upload new content to an existing file with specified conditions and expiration time.
+
+- `s3_generate_presigned_delete`
+
+  - Generates a presigned URL for deleting a file from S3. This URL allows users to delete files securely with an expiration time of 3600 seconds.
+
+- `delete_image`
+
+  - Deletes an image from S3 using a presigned URL. If the deletion fails, it raises an exception with the response status code.
+
+- `file_generate_name`
+
+  - Generates a unique file name using UUID.
+
+#### FileDirectUploadService
+
+Handles the direct upload process for files, ensuring atomic transactions to maintain data integrity.
+
+- `start`
+
+  - Initiates the file upload process by creating a `File` record and generating a presigned URL for direct upload to S3.
+
+- `finish`
+
+  - Marks the file upload process as complete by setting the upload finish timestamp and saving the `File` record.
+
+- `start_edit`
+
+  - Initiates the file update process by updating the `File` record and generating a presigned URL for modifying the file content in S3.
 
 ## Running the Project
 
