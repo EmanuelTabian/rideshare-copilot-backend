@@ -10,12 +10,18 @@ Django-based platform designed to manage user authentication and database intera
 
 ## Table of Contents
 
+- [Frontend Integration](#frontend-integration)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Setup and Installation](#setup-and-installation)
 - [Database Models](#database-models)
 - [API Endpoints](#api-endpoints)
 - [Running the Project](#running-the-project)
+- [Dev Tips](#dev-tips)
+
+## Frontend Integration
+
+This backend project is designed to work seamlessly with the Rideshare Copilot V2 frontend application. For more details and to access the frontend repository, visit [Rideshare Copilot V2 Frontend Repository](https://github.com/yourusername/rideshare-copilot-frontend).
 
 ## Features
 
@@ -1591,11 +1597,7 @@ To run the project locally, follow the setup and installation steps mentioned ab
 python manage.py runserver
 ```
 
-## Frontend Integration
-
-This backend project is designed to work seamlessly with the Rideshare Copilot V2 frontend application. For more details and to access the frontend repository, visit [Rideshare Copilot V2 Frontend Repository](https://github.com/yourusername/rideshare-copilot-frontend).
-
-### Dev Tips
+## Dev Tips
 
 - **Sort Imports with isort**:
 
