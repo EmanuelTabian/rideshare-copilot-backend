@@ -1329,17 +1329,208 @@ curl -X DELETE "http://localhost:8000/api/delete-carpost/1" \
 }
 ```
 
-- `POST /api/add-carpost`: Add a car post.
-- `GET /api/get-carposts/page-number`: Retrieves 10 car posts based on a page number positional argument.
-- `GET /api/het-carpost/carpost-id`: Retrieve a specific car post.
-- `GET /api/get-user-carposts/carpost-id`: Retrieve car-posts associated with the current logged in user.
-- `PUT /api/update-ridepost/carpost-id:` Update a specific car post.
-- `DELETE /api/delete-ridepost`: Delete a specific car post.
+## Files
 
-- **Files**
-  - `POST /api/upload/direct/start`: Starts the presigned url generation and stores image data.
-  - `POST /api/upload/direct/finish`: Marks the upload process as finished and sets the file upload date.
-  - `GET /api/get-image-by-post-id/car-post-id`: Gets the image based on the car post id.
+### Start Direct Upload API
+
+The Start Direct Upload API allows authenticated users to initiate the file upload process by generating a presigned URL for direct upload to AWS S3.
+
+- Files are linked to a created post via a Foreign Key set to CASCADE on delete, ensuring that associated file entries and AWS S3 bucket files are removed when a car post is deleted.
+
+#### Endpoint
+
+- **URL**: `/api/upload/direct/start`
+- **Method**: `POST`
+
+#### Request Body
+
+```json
+{
+  "file_name": "string",
+  "file_type": "string",
+  "car_post_id": "integer"
+}
+```
+
+#### Response
+
+- **Success**: Returns the presigned URL and additional data required for the direct upload.
+
+  - **Status Code**: `200 OK`
+  - **Response Body**:
+    ```json
+    {
+      "id": "integer",
+      "url": "string",
+      "fields": {
+        "acl": "string",
+        "key": "string",
+        "policy": "string",
+        "x-amz-algorithm": "string",
+        "x-amz-credential": "string",
+        "x-amz-date": "string",
+        "x-amz-signature": "string"
+      }
+    }
+    ```
+
+- **Error**: Returns an error message if the request data is invalid or if the user does not have permission to upload the file.
+
+  - **Status Code**: `400 Bad Request`
+  - **Response Body**:
+    ```json
+    {
+      "error": "string"
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X POST "http://localhost:8000/api/upload/direct/start" \
+-H "Authorization: Bearer <JWT token>" \
+-H "Content-Type: application/json" \
+-d '{
+  "file_name": "example.jpg",
+  "file_type": "image/jpeg",
+  "car_post_id": 1
+}'
+```
+
+#### Example Response
+
+```json
+{
+  "url": "https://your-bucket.s3.amazonaws.com/",
+  "fields": {
+
+    {
+      "id": 1,
+      "url": "https://your-bucket.s3.amazonaws.com/",
+      "fields": {
+        "acl": "public-read",
+        "key": "uploads/example.jpg",
+        "policy": "eyJleHBpcmF0aW9uIjoiMjAyNC0xMC0xNlQxNTo1Njo0Ny4xNjc5NTZaIiwiY29uZGl0aW9ucyI6W3siYnVja2V0IjoieW91ci1idWNrZXQifSx7ImtleSI6InVwbG9hZHMvZXhhbXBsZS5qcGcifSx7ImFjbCI6InB1YmxpYy1yZWFkIn0seyJjb250ZW50LXR5cGUiOiJpbWFnZS9qcGVnIn1dfQ==",
+        "x-amz-algorithm": "AWS4-HMAC-SHA256",
+        "x-amz-credential": "AKIAIOSFODNN7EXAMPLE/20241016/us-east-1/s3/aws4_request",
+        "x-amz-date": "20241016T155647Z",
+        "x-amz-signature": "bWq2s1WEIj+Ydj0vQ697zp1hbx0="
+      }
+    }
+  }
+}
+```
+
+### Finish Direct Upload API
+
+The Finish Direct Upload API allows authenticated users to mark the file upload process as complete and set the file upload date.
+
+#### Endpoint
+
+- **URL**: `/api/upload/direct/finish`
+- **Method**: `POST`
+
+#### Request Body
+
+```json
+{
+  "car_post_id": "integer",
+  "file_name": "string"
+}
+```
+
+#### Response
+
+- **Success**: Confirms that the file upload process has been completed successfully.
+
+  - **Status Code**: `200 OK`
+  - **Response Body**:
+    ```json
+    {
+      "id": "integer"
+    }
+    ```
+
+- **Error**: Returns an error message if the request data is invalid or if the user does not have permission to complete the upload.
+
+  - **Status Code**: `400 Bad Request`
+  - **Response Body**:
+    ```json
+    {
+      "error": "string"
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X POST "http://localhost:8000/api/upload/direct/finish" \
+-H "Authorization: Bearer <JWT token>" \
+-H "Content-Type: application/json" \
+-d '{
+  "car_post_id": 1,
+  "file_name": "example.jpg"
+}'
+```
+
+#### Example Response
+
+```json
+{
+  "id": 180
+}
+```
+
+### Get Image by Car Post ID API
+
+The Get Image by Car Post ID API allows authenticated users to retrieve the image associated with a specific car post.
+
+#### Endpoint
+
+- **URL**: `/api/get-image-by-post-id/<car_post_id>`
+- **Method**: `GET`
+
+#### Request
+
+- **Headers**:
+  - `Authorization`: `Bearer <JWT token>`
+
+#### Response
+
+- **Success**: Returns the image data for the specified car post ID.
+
+  - **Status Code**: `200 OK`
+  - **Response Body**:
+    ```json
+    {
+      "url": "string"
+    }
+    ```
+
+- **Error**: Returns an error message if the car post does not exist or if the user is not authenticated.
+
+  - **Status Code**: `404 Not Found`
+  - **Response Body**:
+    ```json
+    {
+      "message": "The car post does not exist!."
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X GET "http://localhost:8000/api/get-image-by-post-id/1" \
+-H "Authorization: Bearer <JWT token>"
+```
+
+#### Example Response
+
+```json
+{
+  "url": "https://example-bucket.s3.amazonaws.com/example-bucket--euw2-az2--x-s3/user-1/photos/example-photo.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=DUMMYCREDENTIAL%2F20241016%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20241016T161307Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=dummysignature1234567890abcdef"
+}
+```
 
 ## Running the Project
 
