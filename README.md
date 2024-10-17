@@ -972,7 +972,7 @@ The Add Car Post API allows authenticated users to add a new car post to their a
   "model": "string",
   "version": "string",
   "year": "string"
-  // ...
+   ...
 }
 ```
 
@@ -1104,8 +1104,8 @@ curl -X GET "http://localhost:8000/api/get-carposts/1" \
       "car_name": "Volvo",
       "model": "XC90",
       "version": null,
-      "year": "2010",
-      ...
+      "year": "2010"
+      // ...
     }
   ],
   "count": 1,
