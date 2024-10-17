@@ -2,11 +2,18 @@
 
 ## Description
 
-This app facilitates seamless data flow within the Rideshare Copilot V2 application. It manages user data, file storage, car rental listings, and calculator entries, while providing services to handle database interactions (GET, POST, PUT, DELETE). Additionally, it supports the generation of presigned URLs for secure image uploads to an AWS S3 bucket
+This app facilitates seamless data flow within the [**Rideshare Copilot V2 app**](https://www.rideshare-copilot.eu/).
+For more information, visit [frontend app repository](https://github.com/EmanuelTabian/rideshare-copilot-v2).
+
+- It manages user data, file storage, car rental listing, and calculator entries, while providing services to handle database interactions (`GET, POST, PUT, DELETE`).
+- Additionally, it supports the generation of presigned URLs for secure image uploads to an AWS S3 bucket.
 
 ## Overview
 
-Django-based platform designed to manage user authentication and database interactions via PostgreSQL. The project contains a wide range of functionalities including user, car rental posts, and earnings calculations interaction, along with customizable user settings. The backend architecture ensures smooth, efficient operations for the Rideshare Copilot V2 app, supporting both data storage and real-time interactions with external services like AWS S3 for media management.It also provides admin access, with management capabilities through Django admin site.
+Django-based platform designed to manage user **authentication** and database interactions via **PostgreSQL**. The project contains a wide range of functionalities including, car **rental/sell posts**, and **earnings calculations**, along with customizable user **settings**.
+
+- The backend architecture ensures smooth, efficient operations for the [**Rideshare Copilot V2 app**](https://www.rideshare-copilot.eu/), supporting both data storage and real-time interactions with external services like **AWS S3** for media management.
+- It also provides admin access, with management capabilities through **Django admin site**.
 
 ## Table of Contents
 
@@ -15,81 +22,83 @@ Django-based platform designed to manage user authentication and database intera
 - [Tech Stack](#tech-stack)
 - [Setup and Installation](#setup-and-installation)
 - [Database Models](#database-models)
-- [API Endpoints](#api-endpoints)
+- [API Endpoints Documentation](#api-endpoints)
 - [Running the Project](#running-the-project)
 - [Dev Tips](#dev-tips)
 
 ## Frontend Integration
 
-This backend project is designed to work seamlessly with the Rideshare Copilot V2 frontend application. For more details and to access the frontend repository, visit [Rideshare Copilot V2 Frontend Repository](https://github.com/yourusername/rideshare-copilot-frontend).
+This backend project is designed to work seamlessly with the [**Rideshare Copilot V2**](https://www.rideshare-copilot.eu/) frontend application. For more details, access the frontend repository, visit [Rideshare Copilot V2 Frontend Repository](https://github.com/EmanuelTabian/rideshare-copilot-v2).
 
 ## Features
 
-- User Authentication:
+### User Authentication
 
-  - Registration, login, user update and user deletion services.
-  - JWT-based authentication, with tokens valid for 24 hours (token refresh mechanism planned for a future update).
-  - Django built-in password strength check.
+- Registration, login, user update and user deletion services.
+- JWT-based authentication, with tokens valid for 24 hours (token refresh mechanism planned for a future update).
+- Django built-in password strength check.
 
-- Car Post Management:
+### Car Post Management
 
-  - Full CRUD operations (Create, Read, Update, Delete) for car rental posts, allowing users to add, edit, or remove posts through the frontend app's form.
-  - User Foreign Key set to CASCADE. Car Posts associated with a removed user automatically get deleted.
-  - Car post updates support image uploads, with presigned URLs generated for secure image upload to AWS S3. The app tests two different methods for handling image uploads during car post creation and updates.
-  - For more information about the direct upload process implementation and how it works, refer to this [HackSoft article](https://www.hacksoft.io/blog/direct-to-s3-file-upload-with-django).
+- Full CRUD operations (Create, Read, Update, Delete) for car rental posts, allowing users to add, edit, or remove posts through the frontend app's form.
+- User Foreign Key set to CASCADE. Car Posts associated with a removed user automatically get deleted.
+- Car post updates support image uploads, with presigned URLs generated for secure image upload to AWS S3. The app tests two different methods for handling image uploads during car post creation and updates.
+- For more information about the direct upload process implementation and how it works, refer to this [HackSoft article](https://www.hacksoft.io/blog/direct-to-s3-file-upload-with-django).
 
-- File management:
+### File management
 
-  - Optional file input for each car post, allowing users to attach pictures.
-  - Files are linked to car posts via a Foreign Key set to CASCADE on car-post deletion, ensuring associated file entry and AWS S3 bucket file removal.
-  - File database entries store uploaded picture metadata.
-  - The API services handle presigned URL generation for safe frontend app/AWS S3 interaction.
+- Optional file input for each car post, allowing users to attach pictures.
+- Files are linked to car posts via a Foreign Key set to CASCADE on car-post deletion, ensuring associated file entry and AWS S3 bucket file removal.
+- File database entries store uploaded picture metadata.
+- The API services handle presigned URL generation for safe frontend app/AWS S3 interaction.
 
-- Earnings Calculator:
+### Earnings Calculator
 
-  - Stores financial data, including app income, comission, expenses, and calculated earnings
-  - Provides user access to rideshare earnings history.
-  - Financial data is used for frontend app dashboard earnings chart generation.
+- Stores financial data, including app income, comission, expenses, and calculated earnings
+- Provides user access to rideshare earnings history.
+- Financial data is used for frontend app dashboard earnings chart generation.
 
-- User Settings:
-  - Allows users to update credentials (username and/or password).
-  - Supports account deletion.
+### User Settings
+
+- Allows users to update credentials (username and/or password).
+- Supports account deletion.
 
 ## Tech Stack
 
-- **Backend**:
+### **Backend**
 
-  - **Django**: A high-level Python web framework that encourages rapid development and clean, pragmatic design.
-  - **Django REST Framework**: A powerful and flexible toolkit for building Web APIs in Django.
-  - **Simple JWT**: A JSON Web Token authentication plugin for the Django REST Framework.
+- **Django**: A high-level Python web framework that encourages rapid development and clean, pragmatic design.
+- **Django REST Framework**: A powerful and flexible toolkit for building Web APIs in Django.
+- **Simple JWT**: A JSON Web Token authentication plugin for the Django REST Framework.
 
-- **Database**:
+### **Database**
 
-  - **PostgreSQL**: A powerful, open-source object-relational database system with a strong reputation for reliability, feature robustness, and performance.
+- **PostgreSQL**: A powerful, open-source object-relational database system with a strong reputation for reliability, feature robustness, and performance.
 
-- **Storage**:
+### **Storage**
 
-  - **AWS S3**: Amazon Simple Storage Service, an object storage service offering industry-leading scalability, data availability, security, and performance.
+- **AWS S3**: Amazon Simple Storage Service, an object storage service offering industry-leading scalability, data availability, security, and performance.
 
-- **Environment Management**:
+### **Environment Management**
 
-  - **Virtualenv**: A tool to create isolated Python environments, allowing dependencies to be installed on a per-project basis without interfering with the system-wide Python installation.
+- **Virtualenv**: A tool to create isolated Python environments, allowing dependencies to be installed on a per-project basis without interfering with the system-wide Python installation.
 
-- **Code Formatting**:
+### **Code Formatting**
 
-  - **Black**: An uncompromising Python code formatter that ensures code readability and consistency.
-  - **isort**: A Python utility for sorting imports, ensuring PEP8 compliance and improving code readability.
+- **Black**: An uncompromising Python code formatter that ensures code readability and consistency.
+- **isort**: A Python utility for sorting imports, ensuring PEP8 compliance and improving code readability.
 
-- **Linting**:
+### **Linting**
 
-  - **flake8**: A tool for enforcing coding style (PEP8), checking for programming errors, and ensuring code quality in Python projects.
+- **Flake8**: A tool for enforcing coding style (PEP8), checking for programming errors, and ensuring code quality in Python projects.
 
-- **Deployment**:
-  - **Amazon ECS**: A fully managed container orchestration service for deployment, management, and containerized applications scaling.
-  - **RDS**: Amazon Relational Database Service, a managed relational database service that provides scalable and resizable database instances.
-  - **CloudWatch**: A monitoring and observability service that provides data and actionable insights for AWS, hybrid, and on-premises applications and infrastructure resources.
-  - **IAM**: AWS Identity and Access Management, a web service that helps securely control access to AWS services and resources for users.
-  - **Route 53**: A scalable and highly available Domain Name System (DNS) web service designed to route end users to Internet applications by translating domain names into IP addresses.
+### **Deployment**:
+
+- **Amazon ECS**: A fully managed container orchestration service for deployment, management, and containerized applications scaling.
+- **RDS**: Amazon Relational Database Service, a managed relational database service that provides scalable and resizable database instances.
+- **CloudWatch**: A monitoring and observability service that provides data and actionable insights for AWS, hybrid, and on-premises applications and infrastructure resources.
+- **IAM**: AWS Identity and Access Management, a web service that helps securely control access to AWS services and resources for users.
+- **Route 53**: A scalable and highly available Domain Name System (DNS) web service designed to route end users to Internet applications by translating domain names into IP addresses.
 
 ## Setup and Installation
 
@@ -102,105 +111,126 @@ This backend project is designed to work seamlessly with the Rideshare Copilot V
 
 ### Installation Steps
 
-1. **Clone the repository**
+### 1. **Clone the repository**
 
-   ```bash
-   git clone https://github.com/yourusername/rideshare-copilot-backend.git
-   cd rideshare-copilot-backend
-   ```
+```bash
+git clone https://github.com/yourusername/rideshare-copilot-backend.git
+cd rideshare-copilot-backend
+```
 
-2. **Create a virtual environment**
+### 2. **Create a virtual environment**
 
-   ```bash
-   python -m venv env
-   source env/bin/activate  # On Windows use `env\Scripts\activate`
-   ```
+```bash
+python -m venv env
+source env/bin/activate  # On Windows use `env\Scripts\activate`
+```
 
-3. **Install dependencies**
+### 3. **Install dependencies**
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+pip install -r requirements.txt
+```
 
-4. **Configure environment variables**
+### 4. **Configure environment variables**
 
-   - Create a `.env` file in the project root.
-   - Access `.env.example` for environment variables description.
+- Create a `.env` file in the project root.
+- Access `.env.example` for environment variables description.
 
-5. **Set up a PostgreSQL database**:
+  ```plaintext
+  DATABASE_NAME=your_db_name
+  DATABASE_USER=your_db_user
+  DATABASE_PASSWORD=your_db_password
+  DATABASE_HOST=localhost
+  DATABASE_PORT=database_port
 
-   - Access PostgreSQL console
+  TOKEN_SECRET=secret
 
-     ```bash
-         psql -U postgres
-     ```
+  AWS_ACCESS_KEY_ID=your_aws_access_key_id
+  AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
+  AWS_STORAGE_BUCKET_NAME=aws-storage-bucket-name
+  AWS_S3_REGION_NAME=aws-bucket-region-name
+  AWS_AZ_ID=aws-availability-zone-id
 
-   - Create a database
+  AWS_S3_CUSTOM_DOMAIN=distributionname.cloudfront.net
+  AWS_CLOUDFRONT_KEY_ID=your_rsa_cloudfront_public_key_id
+  AWS_CLOUDFRONT_KEY=your_rsa_cloudfront_private_key
+  ```
 
-     ```sql
-     CREATE DATABASE your_db;
-     CREATE USER rideshare_user WITH PASSWORD 'yourpassword';
-     ALTER ROLE rideshare_user SET client_encoding TO 'utf8';
-     ALTER ROLE rideshare_user SET default_transaction_isolation TO 'read committed';
-     ALTER ROLE rideshare_user SET timezone TO 'UTC';
-     GRANT ALL PRIVILEGES ON DATABASE rideshare_copilot_db TO rideshare_user;
-     ```
+### 5. **Set up a PostgreSQL database**:
 
-6. **Set up an AWS S3 Storage Bucket with Cloudfront Distribution**.
-   For a step-by-step guide on setting up an AWS S3 Storage Bucket with CloudFront Distribution, refer to this [YouTube tutorial](https://www.youtube.com/watch?v=RsiXzwesNLQ&t=1192s).
+- Access PostgreSQL console
 
-- **Create an S3 Bucket**
+  ```bash
+      psql -U postgres
+  ```
 
-  - Log in to the AWS Management Console.
-  - Navigate to the S3 service.
-  - Click on "Create bucket".
-  - Enter a unique bucket name and select a region.
-  - Configure options as needed and click "Create bucket".
+- Create a database
 
-- **Set Bucket Permissions**
+  ```sql
+  CREATE DATABASE your_db;
+  CREATE USER rideshare_user WITH PASSWORD 'yourpassword';
+  ALTER ROLE rideshare_user SET client_encoding TO 'utf8';
+  ALTER ROLE rideshare_user SET default_transaction_isolation TO 'read committed';
+  ALTER ROLE rideshare_user SET timezone TO 'UTC';
+  GRANT ALL PRIVILEGES ON DATABASE rideshare_copilot_db TO rideshare_user;
+  ```
 
-  - Select the newly created bucket.
-  - Go to the "Permissions" tab.
-  - Set the appropriate bucket policy to allow access to your application.
+### 6. **Set up an AWS S3 Storage Bucket with Cloudfront Distribution**.
 
-- **Create a CloudFront Distribution**
+For a step-by-step guide on setting up an AWS S3 Storage Bucket with CloudFront Distribution, refer to this [YouTube tutorial](https://www.youtube.com/watch?v=RsiXzwesNLQ&t=1192s).
 
-  - Navigate to the CloudFront service in the AWS Management Console.
-  - Click on "Create Distribution".
-  - Select "Web" as the delivery method.
-  - Under "Origin Settings", set the "Origin Domain Name" to your S3 bucket.
-  - Configure other settings as needed and click "Create Distribution".
+#### **Create an S3 Bucket**
 
-- **Configure CloudFront Distribution**
+- Log in to the AWS Management Console.
+- Navigate to the S3 service.
+- Click on "Create bucket".
+- Enter a unique bucket name and select a region.
+- Configure options as needed and click "Create bucket".
 
-  - Once the distribution is created, select it from the list.
-  - Go to the "Behaviors" tab and click "Create Behavior".
-  - Set the "Path Pattern" to `/*` to match all requests.
-  - Configure other settings as needed and click "Create".
+#### **Set up Bucket Permissions**
 
-- **Update CORS Configuration**
+- Select the newly created bucket.
+- Go to the "Permissions" tab.
+- Set the appropriate bucket policy to allow access to your application.
 
-  - Go back to your S3 bucket.
-  - Navigate to the "Permissions" tab and click on "CORS configuration".
-  - Add the necessary CORS rules to allow your application to interact with the bucket.
+#### **Create a CloudFront Distribution**
 
-- **Update Environment Variables**
+- Navigate to the CloudFront service in the AWS Management Console.
+- Click on "Create Distribution".
+- Select "Web" as the delivery method.
+- Under "Origin Settings", set the "Origin Domain Name" to your S3 bucket.
+- Configure other settings as needed and click "Create Distribution".
 
-  - Add the CloudFront distribution URL and S3 bucket name to your `.env` file.
-  - Ensure your application uses these variables for media storage and retrieval.
+#### **Configure CloudFront Distribution**
 
-7. **Apply migrations**
+- Once the distribution is created, select it from the list.
+- Go to the "Behaviors" tab and click "Create Behavior".
+- Set the "Path Pattern" to `/*` to match all requests.
+- Configure other settings as needed and click "Create".
 
-   ```bash
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
+#### **Update CORS Configuration**
 
-8. **Create a superuser**
+- Go back to your S3 bucket.
+- Navigate to the "Permissions" tab and click on "CORS configuration".
+- Add the necessary CORS rules to allow your application to interact with the bucket.
 
-   ```bash
-   python manage.py createsuperuser
-   ```
+#### **Update Environment Variables**
+
+- Add the CloudFront distribution URL and S3 bucket name to your `.env` file.
+- Ensure your application uses these variables for media storage and retrieval.
+
+### 7. **Apply migrations**
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### 8. **Create a superuser**
+
+```bash
+python manage.py createsuperuser
+```
 
 ## Database Models
 
@@ -215,12 +245,13 @@ This backend project is designed to work seamlessly with the Rideshare Copilot V
 - [Calculator](#calculator)
 - [Car posts](#car-posts)
 - [Files](#files)
+- [Admin](#admin)
 
 ## Auth
 
 ### Register User API
 
-The Register User API allows new users to create an account by providing their name, email, and password. The registration process includes password validation to ensure security.
+It allows new users to create an account by providing their `name, email, and password`. The registration process includes password validation to ensure security.
 
 #### Endpoint
 
@@ -260,15 +291,6 @@ The Register User API allows new users to create an account by providing their n
     }
     ```
 
-#### Password Validation
-
-The password must pass the following validators:
-
-- **UserAttributeSimilarityValidator**: Ensures the password is not too similar to the user's other attributes.
-- **MinimumLengthValidator**: Ensures the password has a minimum length.
-- **CommonPasswordValidator**: Prevents the use of common passwords.
-- **NumericPasswordValidator**: Ensures the password is not entirely numeric.
-
 #### Example Request
 
 ```bash
@@ -291,10 +313,19 @@ curl -X POST "http://localhost:8000/api/register" \
 }
 ```
 
+### Password Validation
+
+The password must pass the following validators:
+
+- **UserAttributeSimilarityValidator**: Ensures the password is not too similar to the user's other attributes.
+- **MinimumLengthValidator**: Ensures the password has a minimum length.
+- **CommonPasswordValidator**: Prevents the use of common passwords.
+- **NumericPasswordValidator**: Ensures the password is not entirely numeric.
+
 ### Login User API
 
-Login view handles user authentication and JWT token generation.
-This view allows users to log in by providing their email and password. Upon successful authentication, a JWT token is generated and set as an HTTP-only cookie in the response.
+Login view handles user `authentication` and `JWT token generation`.
+This view allows users to log in by providing their email and password. Upon successful authentication, a JWT token is generated and set as an `HTTP-only` cookie in the response.
 
 #### Endpoint
 
@@ -348,7 +379,7 @@ curl -X POST "http://localhost:8000/api/login" \
 
 ### Get User API
 
-The Get User API allows authenticated users to retrieve their own user data. This endpoint ensures that only authenticated users can access their personal information.
+It allows authenticated users to retrieve their own user data. This endpoint ensures that only authenticated users can access their personal information.
 
 #### Endpoint
 
@@ -358,7 +389,7 @@ The Get User API allows authenticated users to retrieve their own user data. Thi
 #### Request
 
 - **Headers**:
-  - `Authorization`: `Bearer <JWT token>`
+  `Authorization`: `Bearer <JWT token>`
 
 #### Response
 
@@ -403,7 +434,7 @@ curl -X GET "http://localhost:8000/api/user" \
 
 ### Update User API
 
-The Update User API allows authenticated users to update their account information, including their password. This endpoint ensures that only authenticated users can update their personal information.
+Authenticated users account information update.
 
 #### Endpoint
 
@@ -412,9 +443,7 @@ The Update User API allows authenticated users to update their account informati
 
 #### Request
 
-- **Headers**:
-
-  - `Authorization`: `Bearer <JWT token>`
+- **Headers**: `Authorization`: `Bearer <JWT token>`
 
 - **Body**:
   ```json
@@ -472,7 +501,7 @@ curl -X PUT "http://localhost:8000/api/update-user" \
 
 ### Logout User API
 
-The Logout User API allows authenticated users to log out by deleting the JWT token stored in the HTTP-only cookie. This endpoint ensures that the user's session is terminated securely.
+It allows authenticated users to log out by deleting the JWT token stored in the `HTTP-only` cookie.
 
 #### Endpoint
 
@@ -481,8 +510,7 @@ The Logout User API allows authenticated users to log out by deleting the JWT to
 
 #### Request
 
-- **Headers**:
-  - `Authorization`: `Bearer <JWT token>`
+- **Headers**: `Authorization`: `Bearer <JWT token>`
 
 #### Response
 
@@ -523,7 +551,7 @@ curl -X POST "http://localhost:8000/api/logout" \
 
 ### Delete User API
 
-The Delete User API allows authenticated users to delete their own account. This endpoint ensures that only authenticated users can delete their personal information.
+The Delete User API allows authenticated users to delete their own account.
 
 #### Endpoint
 
@@ -532,8 +560,7 @@ The Delete User API allows authenticated users to delete their own account. This
 
 #### Request
 
-- **Headers**:
-  - `Authorization`: `Bearer <JWT token>`
+- **Headers**: `Authorization`: `Bearer <JWT token>`
 
 #### Response
 
@@ -570,7 +597,7 @@ curl -X DELETE "http://localhost:8000/api/delete-user" \
 
 ### Add Calculator Entry API
 
-The Add Calculator Entry API allows authenticated users to add a new calculator entry to their account.
+Users are able to add a new calculator entry to their account.
 
 #### Endpoint
 
@@ -651,9 +678,7 @@ The Get Calculator Entries API allows authenticated users to retrieve their calc
 
 #### Request
 
-- **Headers**:
-
-  - `Authorization`: `Bearer <JWT token>`
+- **Headers**: `Authorization`: `Bearer <JWT token>`
 
 - **Query Parameters**:
   - `page`: The page number to retrieve (default is 1).
@@ -735,7 +760,7 @@ curl -X GET "http://localhost:8000/api/get-calculator-entries?page=1" \
 
 The Get Recent Calculator Entries API allows authenticated users to retrieve their calculator entries from the past 7, 30, or 90 days.
 
-- Recent calculator entries serve as the data source for generating charts on the frontend dashboard, providing users with visual insights into their earnings over the selected period.
+- Recent calculator entries serve as the data source for generating **charts** on the frontend dashboard, providing users with visual insights into their earnings over the selected period.
 - These entries are ordered by publication date, ensuring that the frontend does not need to handle sorting for chart generation.
 
 #### Endpoint
@@ -745,9 +770,7 @@ The Get Recent Calculator Entries API allows authenticated users to retrieve the
 
 #### Request
 
-- **Headers**:
-
-  - `Authorization`: `Bearer <JWT token>`
+- **Headers**: `Authorization`: `Bearer <JWT token>`
 
 - **Query Parameters**:
   - `days`: The number of days to look back (must be 7, 30, or 90). Default is 7.
@@ -818,9 +841,7 @@ The Update Calculator Entry API allows authenticated users to update an existing
 
 #### Request
 
-- **Headers**:
-
-  - `Authorization`: `Bearer <JWT token>`
+- **Headers**: `Authorization`: `Bearer <JWT token>`
 
 - **Body**:
   ```json
@@ -888,7 +909,7 @@ curl -X PATCH "http://localhost:8000/api/update-calculator-entry/1" \
 
 ### Delete Calculator Entry API
 
-The Delete Calculator Entry API allows authenticated users to delete an existing calculator entry. This endpoint ensures that only the owner of the entry can delete it.
+The Delete Calculator Entry API allows authenticated users to delete an existing calculator entry.
 
 #### Endpoint
 
@@ -897,8 +918,7 @@ The Delete Calculator Entry API allows authenticated users to delete an existing
 
 #### Request
 
-- **Headers**:
-  - `Authorization`: `Bearer <JWT token>`
+- **Headers**: `Authorization`: `Bearer <JWT token>`
 
 #### Response
 
@@ -951,9 +971,8 @@ The Add Car Post API allows authenticated users to add a new car post to their a
   "car_name": "string",
   "model": "string",
   "version": "string",
-  "year": "string",
-    ...
-
+  "year": "string"
+  // ...
 }
 ```
 
@@ -969,8 +988,8 @@ The Add Car Post API allows authenticated users to add a new car post to their a
       "car_name": "string",
       "model": "string",
       "version": "string",
-      "year": "string",
-      ...
+      "year": "string"
+      // ...
     }
     ```
 
@@ -1010,21 +1029,8 @@ curl -X POST "http://localhost:8000/api/add-carpost" \
   "version": null,
   "year": "2010",
   "engine": null,
-  "fuel": null,
-  "body": null,
-  "transmission": null,
-  "gear_number": null,
-  "color": null,
-  "seat_number": null,
-  "door_number": null,
-  "milleage": null,
-  "power": null,
-  "mpg": null,
-  "description": null,
-  "emission_standard": null,
-  "location": null,
-  "contact": null,
-  "price": null
+  "fuel": null
+  // ...
 }
 ```
 
@@ -1039,8 +1045,7 @@ The Get All Car Posts API allows authenticated users to retrieve a paginated lis
 
 #### Request
 
-- **Headers**:
-  - `Authorization`: `Bearer <JWT token>`
+- **Headers**: `Authorization`: `Bearer <JWT token>`
 
 #### Response
 
@@ -1056,8 +1061,8 @@ The Get All Car Posts API allows authenticated users to retrieve a paginated lis
           "car_name": "string",
           "model": "string",
           "version": "string",
-          "year": "string",
-          ...
+          "year": "string"
+          // ...
         }
       ],
       "count": "integer",
@@ -1117,7 +1122,7 @@ curl -X GET "http://localhost:8000/api/get-carposts/1" \
 
 ### Get User Car Posts API
 
-The Get User Car Posts API allows authenticated users to retrieve their own car posts. This endpoint functions similarly to the Get All Car Posts API but filters the results to only include car posts associated with the current user.
+The Get User Car Posts API allows authenticated users to retrieve their own car posts. This endpoint functions similarly to the Get All Car Posts API but filters the results to only include car posts associated with the **current user**.
 
 #### Endpoint
 
@@ -1150,8 +1155,8 @@ The Get Single Car Post API allows authenticated users to retrieve a specific ca
       "car_name": "string",
       "model": "string",
       "version": "string",
-      "year": "string",
-      ...
+      "year": "string"
+      // ...
     }
     ```
 
@@ -1180,8 +1185,8 @@ curl -X GET "http://localhost:8000/api/get-carpost/1" \
   "car_name": "Volvo",
   "model": "XC90",
   "version": null,
-  "year": "2010",
-  ...
+  "year": "2010"
+  //  ...
 }
 ```
 
@@ -1193,37 +1198,6 @@ The Update Car Post API allows authenticated users to update an existing car pos
 
 - **URL**: `/api/update-carpost/<car_post_id>`
 - **Method**: `PUT`
-
-#### Image Upload Process for Car Post
-
-The upload process uses the rideposts app services and performs the upload. This is done in contrast to the direct upload process for new posts and is kept as a reference for two different techniques.
-
-- For more information about the direct upload process implementation and how it works, refer to the [Files](#files) section.
-
-#### This function performs the following steps:
-
-- Checks if a file associated with the car post already exists.
-- If a file exists and an image is provided in the request:
-  - Validates the image size.
-  - Generates a presigned URL for updating the image from the AWS S3 Bucket.
-  - Puts the image to S3 using the presigned URL.
-  - Returns an error response if the upload fails.
-- If no file exists and an image is provided in the request:
-  - Validates the image size.
-  - Generates presigned data for uploading the image to S3.
-  - Extracts the presigned URL and fields from the presigned data.
-  - Uploads the image to S3 using the presigned URL and fields.
-  - Returns an error response if the upload fails.
-  - Marks the upload process as finished by updating the file record.
-
-#### Parameters:
-
-- **request**: The HTTP request object containing the image file.
-- **car_post_id**: The car post object associated with the file.
-
-#### Returns:
-
-- **Response**: An HTTP response indicating the success or failure of the image upload process.
 
 #### Request
 
@@ -1237,8 +1211,8 @@ The upload process uses the rideposts app services and performs the upload. This
     "car_name": "string",
     "model": "string",
     "version": "string",
-    "year": "string",
-    ...
+    "year": "string"
+    // ...
   }
   ```
 
@@ -1254,8 +1228,8 @@ The upload process uses the rideposts app services and performs the upload. This
       "car_name": "string",
       "model": "string",
       "version": "string",
-      "year": "string",
-      ...
+      "year": "string"
+      // ...
     }
     ```
 
@@ -1291,14 +1265,42 @@ curl -X PUT "http://localhost:8000/api/update-carpost/1" \
   "car_name": "Volvo",
   "model": "XC90",
   "version": "T6",
-  "year": "2015",
-  ...
+  "year": "2015"
+  // ...
 }
 ```
 
+### Image Upload Process for Car Post
+
+The upload process uses the rideposts app `services` and performs the upload. This is done in contrast to the **direct upload** process for new posts and is kept as a reference for two different techniques.
+
+- For more information about the direct upload process implementation and how it works, refer to the [Files](#files) section.
+- This logic is included as an if statement inside the Add Car Post API view.
+
+#### A file exists and an image is provided in the request
+
+- Validates the image size.
+- Generates a presigned URL for updating the image from the AWS S3 Bucket.
+- Puts the image to S3 using the presigned URL.
+- Returns an error response if the upload fails.
+
+#### No file exists and an image is provided in the request
+
+- Validates the image size.
+- Generates presigned data for uploading the image to S3.
+- Extracts the presigned URL and fields from the presigned data.
+- Uploads the image to S3 using the presigned URL and fields.
+- Returns an error response if the upload fails.
+- Marks the upload process as finished by updating the file record.
+
+#### Parameters:
+
+- **request**: The HTTP request object containing the image file.
+- **car_post_id**: The car post object associated with the file.
+
 ### Delete Car Post API
 
-The Delete Car Post API allows authenticated users to delete an existing car post. This endpoint ensures that only the owner of the car post can delete it.
+The Delete Car Post API allows authenticated users to delete an existing car post.
 
 #### Endpoint
 
@@ -1307,8 +1309,7 @@ The Delete Car Post API allows authenticated users to delete an existing car pos
 
 #### Request
 
-- **Headers**:
-  - `Authorization`: `Bearer <JWT token>`
+- **Headers**: `Authorization`: `Bearer <JWT token>`
 
 #### Response
 
@@ -1344,9 +1345,9 @@ curl -X DELETE "http://localhost:8000/api/delete-carpost/1" \
 
 ### Start Direct Upload API
 
-The Start Direct Upload API allows authenticated users to initiate the file upload process by generating a presigned URL for direct upload to AWS S3.
+The Start Direct Upload API allows authenticated users to initiate the file upload process by generating a presigned URL for direct upload to **AWS S3**.
 
-- Files are linked to a created post via a Foreign Key set to CASCADE on delete, ensuring that associated file entries and AWS S3 bucket files are removed when a car post is deleted.
+- Files are linked to a created post via a Foreign Key set to `CASCADE` on delete, ensuring that associated file entries and **AWS S3** bucket files are removed when a car post is deleted.
 
 #### Endpoint
 
@@ -1434,7 +1435,7 @@ curl -X POST "http://localhost:8000/api/upload/direct/start" \
 
 ### Finish Direct Upload API
 
-The Finish Direct Upload API allows authenticated users to mark the file upload process as complete and set the file upload date.
+The Finish Direct Upload API allows authenticated users to mark the file upload process as complete and set the file **upload date**.
 
 #### Endpoint
 
@@ -1503,8 +1504,7 @@ The Get Image by Car Post ID API allows authenticated users to retrieve the imag
 
 #### Request
 
-- **Headers**:
-  - `Authorization`: `Bearer <JWT token>`
+- **Headers**: `Authorization`: `Bearer <JWT token>`
 
 #### Response
 
@@ -1549,45 +1549,55 @@ The following services handle the generation of presigned URLs for various S3 op
 
 #### Presigned URL generation/interaction
 
-- `s3_generate_presigned_post`
+`s3_generate_presigned_post`
 
-  - Generates a presigned URL for uploading a file directly to S3. This URL allows users to upload files with specified conditions and expiration time.
+- Generates a presigned URL for uploading a file directly to S3. This URL allows users to upload files with specified conditions and expiration time.
 
-- `s3_generate_presigned_get`
+`s3_generate_presigned_get`
 
-  - Generates a presigned URL for retrieving a file from S3. This URL allows users to download files securely with an expiration time of 3600 seconds.
+- Generates a presigned URL for retrieving a file from S3. This URL allows users to download files securely with an expiration time of 3600 seconds.
 
-- `s3_generate_presigned_put`
+`s3_generate_presigned_put`
 
-  - Generates a presigned URL for updating a file in S3. This URL allows users to upload new content to an existing file with specified conditions and expiration time.
+- Generates a presigned URL for updating a file in S3. This URL allows users to upload new content to an existing file with specified conditions and expiration time.
 
-- `s3_generate_presigned_delete`
+`s3_generate_presigned_delete`
 
-  - Generates a presigned URL for deleting a file from S3. This URL allows users to delete files securely with an expiration time of 3600 seconds.
+- Generates a presigned URL for deleting a file from S3. This URL allows users to delete files securely with an expiration time of 3600 seconds.
 
-- `delete_image`
+`delete_image`
 
-  - Deletes an image from S3 using a presigned URL. If the deletion fails, it raises an exception with the response status code.
+- Deletes an image from S3 using a presigned URL. If the deletion fails, it raises an exception with the response status code.
 
-- `file_generate_name`
+`file_generate_name`
 
-  - Generates a unique file name using UUID.
+- Generates a unique file name using UUID.
 
-#### FileDirectUploadService
+#### File direct upload
 
 Handles the direct upload process for files, ensuring atomic transactions to maintain data integrity.
 
-- `start`
+`start`
 
-  - Initiates the file upload process by creating a `File` record and generating a presigned URL for direct upload to S3.
+- Initiates the file upload process by creating a `File` record and generating a presigned URL for direct upload to S3.
 
-- `finish`
+`finish`
 
-  - Marks the file upload process as complete by setting the upload finish timestamp and saving the `File` record.
+- Marks the file upload process as complete by setting the upload finish timestamp and saving the `File` record.
 
-- `start_edit`
+`start_edit`
 
-  - Initiates the file update process by updating the `File` record and generating a presigned URL for modifying the file content in S3.
+- Initiates the file update process by updating the `File` record and generating a presigned URL for modifying the file content in S3.
+
+### Admin
+
+The **Django admin site** allows superusers to access the `admin` dashboard.
+
+- It provides support for users, car posts and calculator entries management.
+
+#### Endpoint
+
+- **URL**: `/admin`
 
 ## Running the Project
 
@@ -1599,44 +1609,45 @@ python manage.py runserver
 
 ## Dev Tips
 
-- **Sort Imports with isort**:
+#### **Sort Imports with isort**:
 
-  - To sort imports in a specific file:
-    ```bash
-    isort filename.py
-    ```
-  - To sort imports for the entire project:
-    ```bash
-    isort .
-    ```
-  - To ensure modifications don't introduce syntax errors:
-    ```bash
-    isort --atomic filename.py
-    ```
-  - For VS Code users, install the isort extension and add the following to your settings to automatically sort imports on save:
-    ```json
-    "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    }
-    },
-    "isort.args": ["--profile", "black"]
-    ```
-    Use `Shift + Alt + O` to manually sort imports.
+- To sort imports in a specific file:
+  ```bash
+  isort filename.py
+  ```
+- To sort imports for the entire project:
+  ```bash
+  isort .
+  ```
+- To ensure modifications don't introduce syntax errors:
+  ```bash
+  isort --atomic filename.py
+  ```
+- For VS Code users, install the isort extension and add the following to your settings to automatically sort imports on save:
+  ```json
+  "[python]": {
+  "editor.defaultFormatter": "ms-python.black-formatter",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  }
+  },
+  "isort.args": ["--profile", "black"]
+  ```
+  Use `Shift + Alt + O` to manually sort imports.
 
-- **Format Code with Black**:
-  - To format the entire project:
-    ```bash
-    black .
-    ```
-  - To format a specific file:
-    ```bash
-    black filename.py
-    ```
+#### **Format Code with Black**:
 
-3. **Check Code with flake8**:
+- To format the entire project:
+  ```bash
+  black .
+  ```
+- To format a specific file:
+  ```bash
+  black filename.py
+  ```
+
+#### **Check Code with flake8**:
 
 - To check a specific file for code errors:
   ```bash
