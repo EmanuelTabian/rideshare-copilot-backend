@@ -24,6 +24,7 @@ Django-based platform designed to manage user **authentication** and database in
 - [Database Models](#database-models)
 - [API Endpoints Documentation](#api-endpoints)
 - [Running the Project](#running-the-project)
+- [Deployment](#deployment)
 - [Dev Tips](#dev-tips)
 
 ## Frontend Integration
@@ -92,7 +93,7 @@ This backend project is designed to work seamlessly with the [**Rideshare Copilo
 
 - **Flake8**: A tool for enforcing coding style (PEP8), checking for programming errors, and ensuring code quality in Python projects.
 
-### **Deployment**:
+### **AWS**:
 
 - **Amazon ECS**: A fully managed container orchestration service for deployment, management, and containerized applications scaling.
 - **RDS**: Amazon Relational Database Service, a managed relational database service that provides scalable and resizable database instances.
@@ -1606,6 +1607,25 @@ To run the project locally, follow the setup and installation steps mentioned ab
 ```bash
 python manage.py runserver
 ```
+
+## Deployment
+
+### Acknowledgements
+
+Special thanks to [Bogdan Dogaru](https://github.com/BogdanDogaru) for his significant contributions to the deployment phase of this project and for providing valuable mentorship throughout the process.
+
+### Strategy
+
+The deployment phase leverages several AWS services to ensure a robust and scalable infrastructure:
+
+- **AWS ECS Fargate**: We use ECS Fargate for container orchestration, allowing us to run containers without managing servers. This ensures seamless scaling and efficient resource utilization.
+- **Amazon RDS**: Our database is managed by Amazon RDS, providing automated backups, software patching, and high availability.
+- **Load Balancer**: An Application Load Balancer (ALB) distributes incoming traffic across multiple targets, ensuring high availability and fault tolerance.
+- **SSL Certificate**: We secure our application using an SSL certificate from AWS Certificate Manager, ensuring encrypted communication between clients and our services.
+- **AWS CodePipeline**: Our CI/CD pipeline is managed by AWS CodePipeline, automating the build, test, and deploy phases.
+- **AWS CodeBuild**: CodeBuild handles the build process, creating Docker images that are stored in Amazon ECR (Elastic Container Registry) for deployment.
+
+This setup ensures a secure, scalable, and efficient deployment process, leveraging the full power of AWS cloud services.
 
 ## Dev Tips
 
