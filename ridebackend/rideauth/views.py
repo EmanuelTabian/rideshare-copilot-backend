@@ -3,13 +3,12 @@ from datetime import datetime, timedelta, timezone
 
 import jwt
 from django.contrib.auth import authenticate, password_validation
+from django.core.exceptions import ValidationError
 from dotenv import load_dotenv
 from rest_framework.exceptions import AuthenticationFailed
-from django.core.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 
 from .models import User
 from .serializers import UserSerializer
@@ -25,16 +24,19 @@ class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         password = request.data["password"]
-        
+
         try:
-            password_validation.validate_password(password, user=None, password_validators=None)
+            password_validation.validate_password(
+                password, user=None, password_validators=None
+            )
             serializer.is_valid(raise_exception=True)
             serializer.save()
-      
+
             return Response(serializer.data)
         except ValidationError as e:
             return Response({"error": e}, status=400)
-            
+
+
 class LoginView(APIView):
     authentication_classes = []
     permission_classes = []
@@ -80,14 +82,14 @@ class UpdateUserView(APIView):
         try:
             if "password" in request.data:
                 password_validation.validate_password(
-                    request.data["password"],user=None,password_validators=None
+                    request.data["password"], user=None, password_validators=None
                 )
             serializer = UserSerializer(user, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data)
         except ValidationError as e:
-            return Response({'error': e}, status=400)
+            return Response({"error": e}, status=400)
 
 
 class DeleteUserView(APIView):
