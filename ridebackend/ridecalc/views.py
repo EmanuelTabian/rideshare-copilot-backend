@@ -131,4 +131,4 @@ class DeleteCalculatorEntry(APIView):
 
         calcentry.delete()
 
-        return Response({'message': "Calculator entry deleted successfully"})
+        return Response({"message": "Calculator entry deleted successfully"})
